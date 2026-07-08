@@ -29,15 +29,26 @@ class AccountLockoutService
 
     public function isLocked(string $ip, string $email): bool
     {
-        if (Cache::get($this->keyForIp($ip).':locked')) {
-            return true;
-        }
+        try {
+            if (Cache::get($this->keyForIp($ip).':locked')) {
+                return true;
+            }
 
-        if (Cache::get($this->keyForEmail($email).':locked')) {
-            return true;
-        }
+            if (Cache::get($this->keyForEmail($email).':locked')) {
+                return true;
+            }
 
-        return false;
+            return false;
+        } catch (\Exception $e) {
+            // Cache unavailable, skip lockout check
+            Log::warning('Cache unavailable, skipping account lockout check', [
+                'ip' => $ip,
+                'email' => $email,
+                'error' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
     }
 
     public function recordFailure(string $ip, string $email): void

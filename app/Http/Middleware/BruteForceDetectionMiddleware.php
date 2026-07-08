@@ -30,12 +30,20 @@ class BruteForceDetectionMiddleware
         $ip = (string) $request->ip();
         $blockKey = "intrusion:blocked:{$ip}";
 
-        if (Cache::get($blockKey, false)) {
-            Log::warning('Blocked IP attempted access', [
+        try {
+            if (Cache::get($blockKey, false)) {
+                Log::warning('Blocked IP attempted access', [
+                    'ip' => $ip,
+                    'path' => $request->path(),
+                ]);
+                abort(429, 'Too many failed attempts. IP temporarily blocked.');
+            }
+        } catch (\Exception $e) {
+            // Cache unavailable, skip brute force detection
+            Log::warning('Cache unavailable, skipping brute force detection', [
                 'ip' => $ip,
-                'path' => $request->path(),
+                'error' => $e->getMessage(),
             ]);
-            abort(429, 'Too many failed attempts. IP temporarily blocked.');
         }
 
         $response = $next($request);
@@ -60,27 +68,35 @@ class BruteForceDetectionMiddleware
 
     private function recordFailure(string $ip, Request $request): void
     {
-        $key = "intrusion:failed:{$ip}";
-        $previous = Cache::get($key, 0);
-        $count = is_int($previous) ? $previous + 1 : 1;
-        Cache::put($key, $count, (int) self::WINDOW);
+        try {
+            $key = "intrusion:failed:{$ip}";
+            $previous = Cache::get($key, 0);
+            $count = is_int($previous) ? $previous + 1 : 1;
+            Cache::put($key, $count, (int) self::WINDOW);
 
-        Log::info('Failed auth attempt recorded', [
-            'ip' => $ip,
-            'count' => $count,
-            'path' => $request->path(),
-        ]);
-
-        if ($count >= (int) self::BLOCK_THRESHOLD) {
-            Cache::put("intrusion:blocked:{$ip}", true, (int) self::BLOCK_DURATION);
-            Log::critical('IP blocked due to brute force pattern', [
+            Log::info('Failed auth attempt recorded', [
                 'ip' => $ip,
                 'count' => $count,
+                'path' => $request->path(),
             ]);
-        } elseif ($count >= (int) self::THRESHOLD) {
-            Log::warning('Brute force threshold reached', [
+
+            if ($count >= (int) self::BLOCK_THRESHOLD) {
+                Cache::put("intrusion:blocked:{$ip}", true, (int) self::BLOCK_DURATION);
+                Log::critical('IP blocked due to brute force pattern', [
+                    'ip' => $ip,
+                    'count' => $count,
+                ]);
+            } elseif ($count >= (int) self::THRESHOLD) {
+                Log::warning('Brute force threshold reached', [
+                    'ip' => $ip,
+                    'count' => $count,
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Cache unavailable, skip failure recording
+            Log::warning('Cache unavailable, skipping failure recording', [
                 'ip' => $ip,
-                'count' => $count,
+                'error' => $e->getMessage(),
             ]);
         }
     }

@@ -9,8 +9,8 @@
 @endphp
 
 <header class="bg-bg-base/80 backdrop-blur-xl fixed top-0 w-full z-50">
-    <div class="flex justify-between items-center h-20 px-4 sm:px-6 max-w-(--spacing-container) mx-auto gap-3">
-        <a href="/" class="font-(--font-headline) text-base sm:text-xl font-bold text-gold-400 tracking-tight shrink-0">
+    <div class="flex justify-between items-center h-20 px-4 sm:px-6 max-w-[var(--spacing-container)] mx-auto gap-3">
+        <a href="/" class="font-[var(--font-headline)] text-base sm:text-xl font-bold text-gold-400 tracking-tight shrink-0">
             Cwt Academy
         </a>
 

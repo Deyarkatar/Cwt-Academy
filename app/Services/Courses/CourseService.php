@@ -213,20 +213,44 @@ class CourseService
      */
     public function flushListCache(): void
     {
-        Cache::add(self::LIST_VERSION_KEY, 0);
-        Cache::increment(self::LIST_VERSION_KEY);
+        try {
+            Cache::add(self::LIST_VERSION_KEY, 0);
+            Cache::increment(self::LIST_VERSION_KEY);
+        } catch (\Exception $e) {
+            // Cache unavailable, skip cache flush
+            Log::warning('Cache unavailable, skipping list cache flush', [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function forgetSlugCache(string $slug): void
     {
-        Cache::forget('course.slug:'.$slug);
+        try {
+            Cache::forget('course.slug:'.$slug);
+        } catch (\Exception $e) {
+            // Cache unavailable, skip cache forget
+            Log::warning('Cache unavailable, skipping slug cache forget', [
+                'slug' => $slug,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function listVersion(): int
     {
-        $version = Cache::get(self::LIST_VERSION_KEY, 0);
+        try {
+            $version = Cache::get(self::LIST_VERSION_KEY, 0);
 
-        return is_int($version) ? $version : (is_numeric($version) ? (int) $version : 0);
+            return is_int($version) ? $version : (is_numeric($version) ? (int) $version : 0);
+        } catch (\Exception $e) {
+            // Cache unavailable, return default version
+            Log::warning('Cache unavailable, returning default list version', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return 0;
+        }
     }
 
     /**
@@ -242,39 +266,49 @@ class CourseService
      */
     private function rememberWithLock(string $cacheKey, int $ttl, callable $resolver)
     {
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $lock = Cache::lock($cacheKey.':lock', 10);
-
         try {
-            if (! $lock->get()) {
-                return $resolver();
-            }
-
-            // Guard against the race where another request rebuilt the
-            // cache while this one was waiting for the lock.
-            if (Cache::has($cacheKey)) { // @phpstan-ignore if.alwaysFalse
-                $lock->release();
-
+            if (Cache::has($cacheKey)) {
                 return Cache::get($cacheKey);
             }
 
-            $result = $resolver();
+            $lock = Cache::lock($cacheKey.':lock', 10);
 
-            Cache::put($cacheKey, $result, $ttl);
-
-            $lock->release();
-
-            return $result;
-        } catch (\Throwable $e) {
             try {
-                $lock->release();
-            } catch (\Throwable) {
-            }
+                if (! $lock->get()) {
+                    return $resolver();
+                }
 
-            Log::warning('CourseService cache lock failed', ['error' => $e->getMessage()]);
+                // Guard against the race where another request rebuilt the
+                // cache while this one was waiting for the lock.
+                if (Cache::has($cacheKey)) { // @phpstan-ignore if.alwaysFalse
+                    $lock->release();
+
+                    return Cache::get($cacheKey);
+                }
+
+                $result = $resolver();
+
+                Cache::put($cacheKey, $result, $ttl);
+
+                $lock->release();
+
+                return $result;
+            } catch (\Throwable $e) {
+                try {
+                    $lock->release();
+                } catch (\Throwable) {
+                }
+
+                Log::warning('CourseService cache lock failed', ['error' => $e->getMessage()]);
+
+                return $resolver();
+            }
+        } catch (\Exception $e) {
+            // Cache unavailable, execute resolver directly
+            Log::warning('Cache unavailable, executing resolver directly', [
+                'cacheKey' => $cacheKey,
+                'error' => $e->getMessage(),
+            ]);
 
             return $resolver();
         }

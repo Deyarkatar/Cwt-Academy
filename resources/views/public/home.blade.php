@@ -57,8 +57,8 @@
     </div>
 </section>
 <!-- How it works -->
-<section class="py-20 px-6 max-w-(--spacing-container) mx-auto">
-    <h2 class="font-(--font-headline) text-2xl md:text-3xl font-bold text-text-primary mb-12 text-center">{{ __('home.how_it_works') }}</h2>
+<section class="py-20 px-6 max-w-[var(--spacing-container)] mx-auto">
+    <h2 class="font-[var(--font-headline)] text-2xl md:text-3xl font-bold text-text-primary mb-12 text-center">{{ __('home.how_it_works') }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         @foreach([
             ['icon' => 'search', 'title' => __('home.step_browse_title'), 'desc' => __('home.step_browse_desc')],
@@ -78,9 +78,9 @@
 </section>
 
 <!-- Featured Courses -->
-<section class="py-20 px-6 max-w-(--spacing-container) mx-auto">
+<section class="py-20 px-6 max-w-[var(--spacing-container)] mx-auto">
     <div class="flex justify-between items-end mb-10">
-        <h2 class="font-(--font-headline) text-2xl md:text-3xl font-bold text-text-primary">{{ __('home.featured_courses') }}</h2>
+        <h2 class="font-[var(--font-headline)] text-2xl md:text-3xl font-bold text-text-primary">{{ __('home.featured_courses') }}</h2>
         <a href="/courses" class="text-gold-400 text-sm font-medium hover:underline decoration-gold-400 underline-offset-4 hidden sm:block">{{ __('home.view_all') }}</a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -99,13 +99,13 @@
 </section>
 
 <!-- Telegram Delivery Notice -->
-<section class="py-20 px-6 max-w-(--spacing-container) mx-auto">
+<section class="py-20 px-6 max-w-[var(--spacing-container)] mx-auto">
     <div class="bg-bg-card border border-border-default rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-gold-400/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gold-400/10 flex items-center justify-center text-gold-400">
             <span class="material-symbols-outlined text-3xl">chat</span>
         </div>
-        <h2 class="font-(--font-headline) text-2xl font-bold text-text-primary mb-4 relative z-10">{{ __('home.telegram_title') }}</h2>
+        <h2 class="font-[var(--font-headline)] text-2xl font-bold text-text-primary mb-4 relative z-10">{{ __('home.telegram_title') }}</h2>
         <p class="text-text-secondary max-w-2xl mx-auto relative z-10">{{ __('home.telegram_desc') }}</p>
     </div>
 </section>

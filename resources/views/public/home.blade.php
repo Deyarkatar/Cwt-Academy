@@ -3,6 +3,7 @@
 @section('title', 'Cwt Academy - Kurdistan Course Marketplace')
 
 @section('content')
+@php($isKurdish = app()->getLocale() === 'ku')
 <!-- Hero — 3D Card (full-screen) -->
 <section class="relative min-h-[calc(100svh-80px)] lg:min-h-[calc(100vh-80px)] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 lg:pt-28 pb-12">
     <div
@@ -15,32 +16,34 @@
         data-cta-contact="{{ __('home.cta_contact') }}"
         data-cta-browse-url="/courses"
         data-cta-contact-url="/contact"
-        data-dir="{{ app()->getLocale() === 'ku' ? 'rtl' : 'ltr' }}"
+        data-dir="{{ $isKurdish ? 'rtl' : 'ltr' }}"
+        data-is-kurdish="{{ $isKurdish ? 'true' : 'false' }}"
     >
         {{-- SSR fallback: rendered immediately so the hero is never blank.
              The React Spline app will replace this markup once it hydrates.
-             Original design: robot on the left, Kurdish headline on the right. --}}
+             Kurdish/RTL: robot on the left, text on the right.
+             English/LTR: text on the left, robot on the right. --}}
         <div class="hero-card group w-full bg-[#0e0e0e] border border-white/10 rounded-[28px] shadow-2xl overflow-hidden relative min-h-[560px] lg:min-h-[680px]">
-            <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 left-[-10%]"></div>
+            <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 {{ $isKurdish ? 'left-[-10%]' : 'right-[-10%]' }}"></div>
 
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
-                {{-- Robot visual (left) — Spline 3D scene loads here after hydration. --}}
-                <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] lg:order-1">
+                {{-- Robot visual --}}
+                <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] {{ $isKurdish ? 'lg:order-1' : 'lg:order-2' }}">
                     <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4"></div>
                 </div>
 
-                {{-- Text content (right) --}}
-                <div dir="rtl" class="flex flex-col justify-center text-center items-center lg:order-2 lg:text-right lg:items-end">
-                    <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="true">
+                {{-- Text content --}}
+                <div dir="{{ $isKurdish ? 'rtl' : 'ltr' }}" class="flex flex-col justify-center text-center items-center {{ $isKurdish ? 'lg:order-2 lg:text-right lg:items-end' : 'lg:order-1 lg:text-left lg:items-start' }}">
+                    <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="{{ $isKurdish ? 'true' : 'false' }}">
                         {{ __('home.hero_title') }}
                         <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>
                     </h1>
 
-                    <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="true">
+                    <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="{{ $isKurdish ? 'true' : 'false' }}">
                         {{ __('home.hero_subtitle') }}
                     </p>
 
-                    <div class="mt-8 flex flex-wrap gap-4 justify-center lg:justify-end">
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center {{ $isKurdish ? 'lg:justify-end' : 'lg:justify-start' }}">
                         <a href="/courses" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm bg-gradient-to-br from-[#FFD700] to-[#FFB800] text-[#3a3000] shadow-[0_0_20px_rgba(255,215,0,0.2)] hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] hover:opacity-95 transition-all">
                             {{ __('home.cta_browse') }}
                         </a>

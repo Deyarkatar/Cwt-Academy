@@ -10,6 +10,8 @@
 /storage/framework/views/*
 /bootstrap/cache/*.php
 /public/storage
+/public/hot
+/public/fonts-manifest.dev.json
 auth.json
 npm-debug.log
 yarn-error.log

@@ -28,9 +28,7 @@
 
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
                 {{-- Robot visual --}}
-                <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] {{ $isKurdish ? 'lg:order-1' : 'lg:order-2' }}">
-                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4"></div>
-                </div>
+                <x-home-hero-robot />
 
                 {{-- Text content --}}
                 <div dir="{{ $isKurdish ? 'rtl' : 'ltr' }}" class="flex flex-col justify-center text-center items-center {{ $isKurdish ? 'lg:order-2 lg:text-right lg:items-end' : 'lg:order-1 lg:text-left lg:items-start' }}">

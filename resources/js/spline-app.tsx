@@ -11,27 +11,18 @@ const SplineSceneBasic = lazy(() =>
 );
 
 /**
- * Static placeholder shown when the 3D scene fails to load.
- *
- * Replace the icon below with an <img /> if you add a static hero image:
- *
- *   <img
- *     src="/images/hero-fallback.png"
- *     alt="Cwt Academy hero"
- *     className="w-full h-full object-cover rounded-xl"
- *   />
+ * Static fallback shown when the 3D scene fails to load.
+ * Uses the real robot image as reliable fallback.
  */
 function StaticPlaceholder() {
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center bg-[#1a1a1a] rounded-xl p-6 gap-3">
-            <div className="w-24 h-24 rounded-full bg-gold-400/10 flex items-center justify-center">
-                <span className="material-symbols-outlined text-4xl text-gold-400">3d_rotation</span>
-            </div>
-            <p className="text-white font-semibold text-lg">Cwt Academy</p>
-            <p className="text-text-secondary text-sm text-center max-w-md">
-                Interactive 3D experience is currently unavailable.
-            </p>
-        </div>
+        <img
+            src="/cwt_academy-logo.jpg"
+            alt="Cwt Academy Robot"
+            className="w-full h-full object-contain rounded-xl"
+            loading="eager"
+            decoding="async"
+        />
     );
 }
 

@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
     'course_id',
     'student_name',
     'student_email',
+    'student_email_hash',
     'student_phone',
     'student_city',
     'payment_method',
@@ -40,9 +41,24 @@ class CourseRequest extends Model
         ];
     }
 
+    public static function hashEmail(?string $email): ?string
+    {
+        if ($email === null || trim($email) === '') {
+            return null;
+        }
+
+        return hash('sha256', strtolower(trim($email)));
+    }
+
     protected static function boot(): void
     {
         parent::boot();
+
+        static::saving(function ($model) {
+            if ($model->isDirty('student_email')) {
+                $model->student_email_hash = self::hashEmail($model->student_email);
+            }
+        });
 
         static::creating(function ($model) {
             if (empty($model->public_tracking_code)) {

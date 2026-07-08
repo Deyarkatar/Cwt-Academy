@@ -15,6 +15,7 @@ return [
     'invalid_file_type' => 'Invalid file type. Only JPG, PNG, WebP, and PDF are allowed.',
     'proof_not_belong_to_request' => 'Payment proof does not belong to this request.',
     'invalid_amount' => 'Invalid payment amount.',
+    'file_storage_failed' => 'Failed to store the payment proof file. Please try again.',
     'password_too_weak' => 'Password must be at least 12 characters and include uppercase, lowercase, and numbers.',
     'server_error' => 'Something went wrong. Please try again later.',
     'transaction_reference_used' => 'This transaction reference has already been submitted. Please check your records and try again.',

@@ -14,7 +14,7 @@
         </div>
         <div>
             <h1 class="font-(--font-headline) text-2xl md:text-3xl font-bold text-text-primary">{{ __('request.title') }}</h1>
-            <p class="text-text-secondary text-sm">{{ $course?->title ?? '' }} — {{ number_format($course?->price_iqd ?? 0) }} IQD</p>
+            <p class="text-text-secondary text-sm">{{ $course?->title ?? '' }} — {{ ($course?->price_iqd ?? 0) === 0 ? __('request.free_course') : number_format($course?->price_iqd).' IQD' }}</p>
         </div>
     </div>
 
@@ -89,8 +89,21 @@
                     @error('payment_method')<p class="mt-1 text-xs text-red-400">{{ $message }}</p>@enderror
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('request.proof_amount') }} <span class="text-text-muted">({{ __('request.optional') }})</span></label>
+                        <input type="number" name="amount_iqd" min="0" max="10000000" value="{{ old('amount_iqd', $course?->price_iqd) }}" class="w-full bg-bg-input border border-border-default rounded-xl px-4 py-3 text-text-primary placeholder-text-muted focus:border-gold-400 focus:outline-none transition-colors" placeholder="{{ __('request.proof_amount_placeholder') }}">
+                        @error('amount_iqd')<p class="mt-1 text-xs text-red-400">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-text-primary mb-2">{{ __('request.proof_transaction_reference') }} <span class="text-text-muted">({{ __('request.optional') }})</span></label>
+                        <input type="text" name="transaction_reference" maxlength="255" value="{{ old('transaction_reference') }}" class="w-full bg-bg-input border border-border-default rounded-xl px-4 py-3 text-text-primary placeholder-text-muted focus:border-gold-400 focus:outline-none transition-colors" placeholder="{{ __('request.proof_transaction_reference_placeholder') }}">
+                        @error('transaction_reference')<p class="mt-1 text-xs text-red-400">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+
                 <div>
-                    <label for="payment_proof" class="block text-sm font-medium text-text-primary mb-2">{{ __('request.upload_proof_label') }} <span class="text-red-400">*</span></label>
+                    <label for="payment_proof" class="block text-sm font-medium text-text-primary mb-2">{{ __('request.upload_proof_label') }} @if (($course?->price_iqd ?? 0) > 0)<span class="text-red-400">*</span>@endif</label>
 
                     <label
                         for="payment_proof"
@@ -102,7 +115,7 @@
                             id="payment_proof"
                             name="payment_proof"
                             accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf"
-                            required
+                            @if (($course?->price_iqd ?? 0) > 0) required @endif
                             class="sr-only"
                             data-proof-input
                         >

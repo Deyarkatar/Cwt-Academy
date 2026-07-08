@@ -112,33 +112,27 @@ class HoneyTokenGuard
      */
     private function containsToken(array $haystack, string $token): bool
     {
-        foreach ($haystack as $value) {
-            if ($this->secureContains($value, $token)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Timing-safe substring check using a fixed-length hash comparison.
-     */
-    private function secureContains(string $haystack, string $needle): bool
-    {
-        $needleLength = strlen($needle);
-        $haystackLength = strlen($haystack);
-
-        if ($needleLength === 0 || $haystackLength < $needleLength) {
+        $tokenLength = strlen($token);
+        if ($tokenLength === 0) {
             return false;
         }
 
-        $needleHash = hash('sha256', $needle);
-        $iterations = $haystackLength - $needleLength + 1;
+        $tokenHash = hash('sha256', $token);
 
-        for ($i = 0; $i < $iterations; $i++) {
-            $candidate = substr($haystack, $i, $needleLength);
-            if (hash_equals($needleHash, hash('sha256', $candidate))) {
+        foreach ($haystack as $value) {
+            $valueLength = strlen($value);
+            if ($valueLength < $tokenLength) {
+                continue;
+            }
+
+            // Exact-match check for values that are exactly the token.
+            if (hash_equals($tokenHash, hash('sha256', $value))) {
+                return true;
+            }
+
+            // Substring check only on reasonably-sized values to prevent CPU
+            // exhaustion from huge request bodies.
+            if ($valueLength <= 10000 && str_contains($value, $token)) {
                 return true;
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Actions\CourseRequests\CreateCourseRequestAction;
+use App\Enums\CourseRequestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Public\StoreCourseRequestRequest;
 use App\Models\Course;
@@ -24,18 +25,30 @@ class CourseRequestController extends Controller
             studentNote: $request->string('student_note')->toString(),
         );
 
+        $amountIqd = is_int($course->price_iqd) ? $course->price_iqd : (int) $course->price_iqd;
+
+        if ($amountIqd === 0 && $courseRequest->status !== CourseRequestStatus::PENDING_REVIEW) {
+            $courseRequest->status = CourseRequestStatus::PENDING_REVIEW->value;
+            $courseRequest->save();
+        }
+
+        $responseData = [
+            'tracking_code' => $courseRequest->public_tracking_code,
+            'status' => $courseRequest->status->value,
+        ];
+
+        if ($amountIqd > 0) {
+            $responseData['payment_instructions'] = [
+                'amount_iqd' => $course->price_iqd,
+                'method' => 'MANUAL',
+                'note' => 'Please pay the amount and submit proof using your tracking code.',
+            ];
+        }
+
         return response()->json([
             'ok' => true,
             'message' => 'COURSE_REQUEST_CREATED',
-            'data' => [
-                'tracking_code' => $courseRequest->public_tracking_code,
-                'status' => $courseRequest->status->value,
-                'payment_instructions' => [
-                    'amount_iqd' => $course->price_iqd,
-                    'method' => 'MANUAL',
-                    'note' => 'Please pay the amount and submit proof using your tracking code.',
-                ],
-            ],
+            'data' => $responseData,
         ], 201);
     }
 }

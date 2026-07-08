@@ -6,7 +6,6 @@ use App\Http\Middleware\BruteForceDetectionMiddleware;
 use App\Http\Middleware\EnsureAdminAuthenticated;
 use App\Http\Middleware\ForceHttps;
 use App\Http\Middleware\HoneyTokenGuard;
-use App\Http\Middleware\ReadReplicaMiddleware;
 use App\Http\Middleware\ResponseCacheMiddleware;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
@@ -61,7 +60,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // before SecurityHeaders so the response has the correct scheme.
         $middleware->prepend(ForceHttps::class);
 
-        // Apply SecurityHeaders + locale + response cache + read replica to WEB stack.
+        // Apply SecurityHeaders + locale + response cache to WEB stack.
         // SecurityHeaders MUST come before ResponseCacheMiddleware: a cache HIT
         // short-circuits the pipeline, and headers must still be applied to it.
         $middleware->appendToGroup('web', [
@@ -69,7 +68,6 @@ return Application::configure(basePath: dirname(__DIR__))
             TrackingRateLimitMiddleware::class,
             SecurityHeaders::class,
             ResponseCacheMiddleware::class,
-            ReadReplicaMiddleware::class,
         ]);
 
         // Apply SecurityHeaders + throttling to the API stack.

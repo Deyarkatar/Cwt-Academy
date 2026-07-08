@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Actions\CourseRequests\CreateCourseRequestAction;
+use App\Enums\CourseRequestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Public\StoreCourseRequestWithProofRequest;
 use App\Models\Course;
@@ -67,11 +68,39 @@ class CourseRequestController extends Controller
 
                 $amountIqd = is_int($course->price_iqd) ? $course->price_iqd : (int) $course->price_iqd;
 
+                if ($amountIqd === 0) {
+                    $courseRequest->status = CourseRequestStatus::PENDING_REVIEW->value;
+                    $courseRequest->save();
+
+                    return $courseRequest->refresh();
+                }
+
+                if (! $file) {
+                    throw ValidationException::withMessages([
+                        'payment_proof' => __('request.validation.proof_required'),
+                    ]);
+                }
+
+                if (isset($validated['amount_iqd']) && is_numeric($validated['amount_iqd'])) {
+                    $providedAmount = (int) $validated['amount_iqd'];
+                    if ($providedAmount !== $amountIqd) {
+                        throw ValidationException::withMessages([
+                            'amount_iqd' => __('errors.amount_mismatch'),
+                        ]);
+                    }
+                    $amountIqd = $providedAmount;
+                }
+
+                $transactionReference = null;
+                if (isset($validated['transaction_reference']) && is_string($validated['transaction_reference']) && trim($validated['transaction_reference']) !== '') {
+                    $transactionReference = trim($validated['transaction_reference']);
+                }
+
                 $paymentService->storeProof(
                     courseRequest: $courseRequest,
                     amountIqd: $amountIqd,
                     senderName: $this->stringFromValidated($validated, 'student_name'),
-                    transactionReference: null,
+                    transactionReference: $transactionReference,
                     file: $file,
                 );
 

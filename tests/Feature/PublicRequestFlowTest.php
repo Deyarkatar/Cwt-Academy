@@ -65,6 +65,47 @@ class PublicRequestFlowTest extends TestCase
         ]);
     }
 
+    public function test_duplicate_pending_request_returns_existing_tracking_code(): void
+    {
+        Storage::fake('local');
+
+        $category = Category::factory()->create();
+        $instructor = Instructor::factory()->create();
+        $course = Course::factory()->create([
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'status' => CourseStatus::ACTIVE,
+            'price_iqd' => 100000,
+        ]);
+
+        $firstResponse = $this->post(route('course-requests.store'), [
+            'course_id' => $course->id,
+            'student_name' => 'Test Student',
+            'student_email' => 'student@example.com',
+            'student_phone' => '+9647501234567',
+            'student_city' => 'Erbil',
+            'payment_proof' => $this->paymentProofFile(),
+        ]);
+
+        $firstRequest = CourseRequest::query()->where('course_id', $course->id)->first();
+        $this->assertNotNull($firstRequest);
+
+        $secondResponse = $this->post(route('course-requests.store'), [
+            'course_id' => $course->id,
+            'student_name' => 'Another Student',
+            'student_email' => 'student@example.com',
+            'student_phone' => '+9647509999999',
+            'student_city' => 'Sulaymaniyah',
+            'payment_proof' => $this->paymentProofFile(),
+        ]);
+
+        $this->assertDatabaseCount('course_requests', 1);
+        $this->assertTrue(
+            $secondResponse->isRedirect(),
+            'Expected redirect after duplicate request; got HTTP '.$secondResponse->getStatusCode().'.'
+        );
+    }
+
     public function test_web_form_redirects_to_success_page_with_tracking_code(): void
     {
         Storage::fake('local');
@@ -141,6 +182,131 @@ class PublicRequestFlowTest extends TestCase
         $response = $this->get(route('request.success', ['code' => $courseRequest->public_tracking_code]));
 
         $response->assertRedirect(route('track', ['code' => $courseRequest->public_tracking_code]));
+    }
+
+    public function test_unified_form_accepts_amount_and_transaction_reference(): void
+    {
+        Storage::fake('local');
+
+        $category = Category::factory()->create();
+        $instructor = Instructor::factory()->create();
+        $course = Course::factory()->create([
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'status' => CourseStatus::ACTIVE,
+            'price_iqd' => 100000,
+        ]);
+
+        $response = $this->post(route('course-requests.store'), [
+            'course_id' => $course->id,
+            'student_name' => 'Test Student',
+            'student_email' => 'student@example.com',
+            'student_phone' => '+9647501234567',
+            'student_city' => 'Erbil',
+            'payment_method' => 'FIB',
+            'amount_iqd' => 100000,
+            'transaction_reference' => 'REF-UNIFIED-12345',
+            'payment_proof' => $this->paymentProofFile(),
+        ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('payment_proofs', [
+            'amount_iqd' => 100000,
+            'transaction_reference_hash' => hash('sha256', 'REF-UNIFIED-12345'),
+        ]);
+
+        $request = CourseRequest::query()->where('course_id', $course->id)->first();
+        $this->assertNotNull($request);
+        $this->assertDatabaseHas('audit_logs', [
+            'entity_type' => 'PaymentProof',
+            'entity_id' => $request->latestPaymentProof?->id,
+            'action' => 'PAYMENT_PROOF_SUBMITTED',
+        ]);
+    }
+
+    public function test_unified_form_skips_proof_for_free_courses(): void
+    {
+        $category = Category::factory()->create();
+        $instructor = Instructor::factory()->create();
+        $course = Course::factory()->create([
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'status' => CourseStatus::ACTIVE,
+            'price_iqd' => 0,
+        ]);
+
+        $response = $this->post(route('course-requests.store'), [
+            'course_id' => $course->id,
+            'student_name' => 'Test Student',
+            'student_email' => 'free@example.com',
+            'student_phone' => '+9647501234567',
+            'student_city' => 'Erbil',
+            'payment_method' => 'MANUAL',
+        ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('course_requests', [
+            'course_id' => $course->id,
+            'status' => CourseRequestStatus::PENDING_REVIEW->value,
+        ]);
+
+        $this->assertDatabaseMissing('payment_proofs', [
+            'amount_iqd' => 0,
+        ]);
+    }
+
+    public function test_api_free_course_request_skips_payment_instructions(): void
+    {
+        $category = Category::factory()->create();
+        $instructor = Instructor::factory()->create();
+        $course = Course::factory()->create([
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'status' => CourseStatus::ACTIVE,
+            'price_iqd' => 0,
+        ]);
+
+        $response = $this->postJson('/api/v1/course-requests', [
+            'course_id' => $course->id,
+            'student_name' => 'Test Student',
+            'student_email' => 'free@example.com',
+            'student_phone' => '+9647501234567',
+            'student_city' => 'Erbil',
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('ok', true)
+            ->assertJsonPath('data.status', CourseRequestStatus::PENDING_REVIEW->value)
+            ->assertJsonMissingPath('data.payment_instructions');
+    }
+
+    public function test_unified_form_rejects_mismatched_amount(): void
+    {
+        Storage::fake('local');
+
+        $category = Category::factory()->create();
+        $instructor = Instructor::factory()->create();
+        $course = Course::factory()->create([
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'status' => CourseStatus::ACTIVE,
+            'price_iqd' => 100000,
+        ]);
+
+        $response = $this->post(route('course-requests.store'), [
+            'course_id' => $course->id,
+            'student_name' => 'Test Student',
+            'student_email' => 'student@example.com',
+            'student_phone' => '+9647501234567',
+            'student_city' => 'Erbil',
+            'amount_iqd' => 50000,
+            'payment_proof' => $this->paymentProofFile(),
+        ]);
+
+        $response->assertSessionHasErrors('amount_iqd');
+        $this->assertDatabaseCount('course_requests', 0);
     }
 
     public function test_student_can_upload_payment_proof_via_web_form(): void
@@ -247,8 +413,32 @@ class PublicRequestFlowTest extends TestCase
         $response = $this->post(route('course-requests.store'), []);
         $response->assertSessionHasErrors([
             'course_id', 'student_name', 'student_email',
-            'student_phone', 'student_city', 'payment_proof',
+            'student_phone', 'student_city',
         ]);
+    }
+
+    public function test_web_form_requires_payment_proof_for_paid_courses(): void
+    {
+        Storage::fake('local');
+
+        $category = Category::factory()->create();
+        $instructor = Instructor::factory()->create();
+        $course = Course::factory()->create([
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'status' => CourseStatus::ACTIVE,
+            'price_iqd' => 100000,
+        ]);
+
+        $response = $this->post(route('course-requests.store'), [
+            'course_id' => $course->id,
+            'student_name' => 'Test Student',
+            'student_email' => 'student@example.com',
+            'student_phone' => '+9647501234567',
+            'student_city' => 'Erbil',
+        ]);
+
+        $response->assertSessionHasErrors('payment_proof');
     }
 
     public function test_web_form_requires_city(): void

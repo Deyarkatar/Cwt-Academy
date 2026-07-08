@@ -68,6 +68,7 @@ return [
     'request_summary' => 'کورتەی داواکاری',
     'course_label' => 'کۆرس',
     'course_price' => 'نرخی کۆرس',
+    'free_course' => 'بێ بەرامبەر',
     'request_status' => 'بارودۆخی داواکاری',
     'status_waiting_admin_review' => 'چاوەڕوانی بەدواداچوونی ئەدمین',
 ];

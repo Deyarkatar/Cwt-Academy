@@ -14,3 +14,6 @@ auth.json
 npm-debug.log
 yarn-error.log
 .DS_Store
+*.pyc
+__pycache__/
+.phpunit.result.cache

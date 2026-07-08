@@ -33,8 +33,10 @@ class StoreCourseRequestWithProofRequest extends FormRequest
             'student_city' => ['required', 'string', 'max:80'],
             'student_note' => ['nullable', 'string', 'max:1000'],
             'payment_method' => ['nullable', 'string', Rule::in(['FIB', 'FASTPAY', 'CARD', 'MANUAL'])],
+            'amount_iqd' => ['nullable', 'integer', 'min:0', 'max:10000000'],
+            'transaction_reference' => ['nullable', 'string', 'max:255'],
             'payment_proof' => [
-                'required',
+                'nullable',
                 'file',
                 'mimes:jpg,jpeg,png,webp,pdf',
                 'mimetypes:image/jpeg,image/png,image/webp,application/pdf',

@@ -68,6 +68,7 @@ return [
     'request_summary' => 'Request summary',
     'course_label' => 'Course',
     'course_price' => 'Course price',
+    'free_course' => 'Free',
     'request_status' => 'Request status',
     'status_waiting_admin_review' => 'Waiting for admin review',
 ];

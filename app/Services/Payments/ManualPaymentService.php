@@ -2,10 +2,12 @@
 
 namespace App\Services\Payments;
 
+use App\Enums\AuditAction;
 use App\Enums\CourseRequestStatus;
 use App\Enums\PaymentProofStatus;
 use App\Models\CourseRequest;
 use App\Models\PaymentProof;
+use App\Services\Audit\AuditLogger;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -94,6 +96,12 @@ class ManualPaymentService
             $disk = self::storageDisk();
             $path = $file->storeAs('payment_proofs', $filename, $disk);
 
+            if (! is_string($path) || $path === '') {
+                throw ValidationException::withMessages([
+                    'payment_proof' => __('errors.file_storage_failed'),
+                ]);
+            }
+
             $referenceHash = PaymentProof::hashTransactionReference($transactionReference);
 
             if ($referenceHash !== null) {
@@ -135,6 +143,20 @@ class ManualPaymentService
 
             $lockedRequest->status = CourseRequestStatus::PENDING_REVIEW->value;
             $lockedRequest->save();
+
+            AuditLogger::log(
+                AuditAction::PAYMENT_PROOF_SUBMITTED,
+                'PaymentProof',
+                $proof->id,
+                null,
+                [
+                    'course_request_id' => $lockedRequest->id,
+                    'amount_iqd' => $amountIqd,
+                    'transaction_reference_hash' => $referenceHash,
+                    'file' => basename($path),
+                ],
+                $lockedRequest->user_id,
+            );
 
             return $proof;
         });

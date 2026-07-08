@@ -20,6 +20,21 @@ class CreateCourseRequestAction
         ?string $paymentMethod = null,
         ?int $userId = null,
     ): CourseRequest {
+        $emailHash = CourseRequest::hashEmail($studentEmail);
+
+        $existing = CourseRequest::query()
+            ->where('course_id', $course->id)
+            ->where('student_email_hash', $emailHash)
+            ->whereIn('status', [
+                CourseRequestStatus::PENDING_PAYMENT->value,
+                CourseRequestStatus::PENDING_REVIEW->value,
+            ])
+            ->first();
+
+        if ($existing instanceof CourseRequest) {
+            return $existing;
+        }
+
         $request = new CourseRequest([
             'course_id' => $course->id,
             'student_name' => $studentName,

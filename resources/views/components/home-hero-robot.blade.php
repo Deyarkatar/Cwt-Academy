@@ -6,7 +6,7 @@
     <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4">
         {{-- Fallback: Real robot image - always visible as reliable fallback --}}
         <img 
-            src="{{ asset('cwt_academy-logo.jpg') }}" 
+            src="{{ asset('images/cwt-academy-robot.jpg') }}" 
             alt="Cwt Academy Robot" 
             class="w-full h-full object-contain rounded-xl"
             loading="eager"

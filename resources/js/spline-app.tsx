@@ -17,7 +17,7 @@ const SplineSceneBasic = lazy(() =>
 function StaticPlaceholder() {
     return (
         <img
-            src="/cwt_academy-logo.jpg"
+            src="/images/cwt-academy-robot.jpg"
             alt="Cwt Academy Robot"
             className="w-full h-full object-contain rounded-xl"
             loading="eager"

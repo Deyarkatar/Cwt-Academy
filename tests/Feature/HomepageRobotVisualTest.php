@@ -35,7 +35,7 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $response->assertSee('hero-robot');
-        $response->assertSee('cwt_academy-logo.jpg');
+        $response->assertSee('images/cwt-academy-robot.jpg');
     }
 
     public function test_kurdish_homepage_contains_shared_robot_component_markup()
@@ -44,7 +44,14 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $response->assertSee('hero-robot');
-        $response->assertSee('cwt_academy-logo.jpg');
+        $response->assertSee('images/cwt-academy-robot.jpg');
+    }
+
+    public function test_robot_asset_url_returns_http_200()
+    {
+        $response = $this->get('/images/cwt-academy-robot.jpg');
+        $response->assertStatus(200);
+        $response->assertHeader('content-type', 'image/jpeg');
     }
 
     public function test_english_homepage_contains_robot_visual_markup()
@@ -89,7 +96,7 @@ class HomepageRobotVisualTest extends TestCase
         
         // Ensure robot container has actual content
         $this->assertStringContainsString('<img', $content);
-        $this->assertStringContainsString('cwt_academy-logo.jpg', $content);
+        $this->assertStringContainsString('images/cwt-academy-robot.jpg', $content);
         
         // Ensure robot stage is not empty
         $this->assertStringContainsString('hero-robot-stage', $content);

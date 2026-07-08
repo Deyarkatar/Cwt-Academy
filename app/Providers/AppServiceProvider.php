@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -58,6 +59,16 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('admin-login', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());
         });
+
+        // ---- Vite asset paths: relative URLs in dev/test ---------------------
+        // Prevents CSP origin mismatches when the dev server is reached via
+        // http://localhost:8000 but Laravel generates absolute asset URLs using
+        // http://127.0.0.1:8000 (or vice versa).
+        if (! app()->environment('production')) {
+            Vite::createAssetPathsUsing(function (string $path, $secure = null): string {
+                return '/'.ltrim($path, '/');
+            });
+        }
 
         // ---- Locale ---------------------------------------------------------
         $locale = session('locale');

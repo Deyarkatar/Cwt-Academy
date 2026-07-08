@@ -40,8 +40,10 @@ class HomePageDiagnosticTest extends TestCase
         $this->assertStringContainsString('hero-title-display', $content);
         $this->assertStringContainsString('hero-robot-stage', $content);
 
-        // A real robot fallback image must be present — not an empty placeholder.
-        $this->assertStringContainsString('hero-robot.svg', $content);
+        // The robot stage must exist and the page must not contain the fake
+        // yellow cartoon robot SVG that was temporarily overlaid on the hero.
+        $this->assertStringContainsString('hero-robot-stage', $content);
+        $this->assertStringNotContainsString('hero-robot.svg', $content);
         $this->assertStringNotContainsString('Interactive 3D experience is currently unavailable', $content);
         $this->assertStringNotContainsString('Loading 3D scene', $content);
 

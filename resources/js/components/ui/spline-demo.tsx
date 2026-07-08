@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { SplineRuntime } from '@/components/ui/spline-runtime';
 
 function useHeroData() {
@@ -28,36 +28,7 @@ function useHeroData() {
 }
 
 function SplineStage({ className, scene }: { className: string; scene: string }) {
-    const [shouldRender, setShouldRender] = useState(false);
-
-    useEffect(() => {
-        // Skip heavy 3D on low-end / mobile / reduced-motion, but keep the
-        // static robot image visible underneath.
-        const isLowEnd = 'deviceMemory' in navigator && (navigator as any).deviceMemory < 4;
-        const isMobile = window.matchMedia('(pointer: coarse)').matches;
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        if (! isLowEnd && ! (isMobile && prefersReduced)) {
-            setShouldRender(true);
-        }
-    }, []);
-
-    return (
-        <div className={`${className} relative`}>
-            <img
-                src="/images/hero-robot.svg"
-                alt="Cwt Academy robot"
-                className="absolute inset-0 w-full h-full object-contain drop-shadow-[0_0_40px_rgba(255,215,0,0.15)]"
-                loading="eager"
-                decoding="async"
-            />
-            {shouldRender && (
-                <div className="absolute inset-0">
-                    <SplineRuntime scene={scene} className="w-full h-full" />
-                </div>
-            )}
-        </div>
-    );
+    return <SplineRuntime scene={scene} className={className} />;
 }
 
 export function SplineSceneBasic() {

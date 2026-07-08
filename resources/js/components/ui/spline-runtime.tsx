@@ -149,20 +149,5 @@ export function SplineRuntime({ scene, className }: SplineRuntimeProps) {
         };
     }, [scene]);
 
-    return (
-        <div ref={containerRef} className={`${className} relative`}>
-            <img
-                src="/images/hero-robot.svg"
-                alt="Cwt Academy robot"
-                className="absolute inset-0 w-full h-full object-contain drop-shadow-[0_0_40px_rgba(255,215,0,0.15)]"
-                loading="eager"
-                decoding="async"
-            />
-            {status === 'error' && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0e0e0e]/80 text-red-400 text-xs px-3 py-1.5 rounded-full border border-red-400/20">
-                    {errorMsg}
-                </div>
-            )}
-        </div>
-    );
+    return <div ref={containerRef} className={className} />;
 }

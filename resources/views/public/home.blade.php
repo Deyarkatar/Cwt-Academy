@@ -24,17 +24,9 @@
             <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 left-[-10%]"></div>
 
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
-                {{-- Robot visual (left) --}}
+                {{-- Robot visual (left) — Spline 3D scene loads here after hydration. --}}
                 <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] lg:order-1">
-                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4 flex items-center justify-center">
-                        <img
-                            src="/images/hero-robot.svg"
-                            alt="Cwt Academy robot"
-                            class="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(255,215,0,0.15)]"
-                            loading="eager"
-                            decoding="async"
-                        >
-                    </div>
+                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4"></div>
                 </div>
 
                 {{-- Text content (right) --}}

@@ -107,7 +107,7 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-rfg8YDfH.css",
+    "file": "assets/app-8h3nRmoq.css",
     "name": "app",
     "names": [
       "app.css"
@@ -116,7 +116,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-McI42Imo.js",
+    "file": "assets/app-BsaKGxV6.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -124,7 +124,7 @@
       "_rolldown-runtime-QTnfLwEv.js"
     ],
     "css": [
-      "assets/app-rfg8YDfH.css"
+      "assets/app-8h3nRmoq.css"
     ]
   },
   "resources/js/components/ui/spline-demo.tsx": {

@@ -35,7 +35,7 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $response->assertSee('hero-robot');
-        $response->assertSee('images/cwt-academy-robot.jpg');
+        $response->assertSee('images/hero-robot.svg');
     }
 
     public function test_kurdish_homepage_contains_shared_robot_component_markup()
@@ -44,34 +44,16 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $response->assertSee('hero-robot');
-        $response->assertSee('images/cwt-academy-robot.jpg');
+        $response->assertSee('images/hero-robot.svg');
     }
 
-    public function test_robot_asset_url_returns_http_200()
-    {
-        $response = $this->get('/images/cwt-academy-robot.jpg');
-        $response->assertStatus(200);
-        $response->assertHeader('content-type', 'image/jpeg');
-    }
-
-    public function test_english_homepage_contains_robot_visual_markup()
+    public function test_homepage_does_not_contain_cwt_logo_in_hero()
     {
         $response = $this->get('/locale/en');
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
-        $response->assertSee('hero-robot-stage');
-        $response->assertSee('alt="Cwt Academy Robot"');
-        $response->assertSee('lg:order-2'); // Robot on the right in English
-    }
-
-    public function test_kurdish_homepage_contains_robot_visual_markup()
-    {
-        $response = $this->get('/locale/ku');
-        $response = $this->followRedirects($response);
-        $response->assertStatus(200);
-        $response->assertSee('hero-robot-stage');
-        $response->assertSee('alt="Cwt Academy Robot"');
-        $response->assertSee('lg:order-1'); // Robot on the left in Kurdish
+        $response->assertDontSee('cwt-academy-robot.jpg');
+        $response->assertDontSee('cwt_academy-logo.jpg');
     }
 
     public function test_homepage_does_not_contain_fake_svg_robot()
@@ -89,15 +71,15 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $content = $response->getContent();
-        
+
         if ($content === false) {
             $this->fail('Response content is false');
         }
-        
+
         // Ensure robot container has actual content
         $this->assertStringContainsString('<img', $content);
-        $this->assertStringContainsString('images/cwt-academy-robot.jpg', $content);
-        
+        $this->assertStringContainsString('images/hero-robot.svg', $content);
+
         // Ensure robot stage is not empty
         $this->assertStringContainsString('hero-robot-stage', $content);
         $this->assertStringContainsString('object-contain', $content);
@@ -109,11 +91,11 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $content = $response->getContent();
-        
+
         if ($content === false) {
             $this->fail('Response content is false');
         }
-        
+
         // English should have text first (order-1) and robot second (order-2)
         $this->assertStringContainsString('lg:order-1', $content); // Text
         $this->assertStringContainsString('lg:order-2', $content); // Robot
@@ -126,11 +108,11 @@ class HomepageRobotVisualTest extends TestCase
         $response = $this->followRedirects($response);
         $response->assertStatus(200);
         $content = $response->getContent();
-        
+
         if ($content === false) {
             $this->fail('Response content is false');
         }
-        
+
         // Kurdish should have robot first (order-1) and text second (order-2)
         $this->assertStringContainsString('lg:order-1', $content); // Robot
         $this->assertStringContainsString('lg:order-2', $content); // Text

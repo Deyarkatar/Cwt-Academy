@@ -16,6 +16,38 @@ class HomePageDiagnosticTest extends TestCase
         $response->assertSee('id="spline-mount"', false);
     }
 
+    public function test_homepage_renders_hero_headline_and_cta_buttons(): void
+    {
+        $response = $this->get('/');
+        $content = $response->getContent();
+
+        $response->assertStatus(200);
+        $this->assertIsString($content);
+        $this->assertStringContainsString(__('home.hero_title'), $content);
+        $this->assertStringContainsString(__('home.hero_highlight'), $content);
+        $this->assertStringContainsString(__('home.cta_browse'), $content);
+        $this->assertStringContainsString(__('home.cta_contact'), $content);
+    }
+
+    public function test_homepage_is_not_blank_and_contains_hero_fallback(): void
+    {
+        $response = $this->get('/');
+        $content = $response->getContent();
+
+        $response->assertStatus(200);
+        $this->assertIsString($content);
+        $this->assertStringContainsString('hero-card', $content);
+        $this->assertStringContainsString('hero-title-display', $content);
+        $this->assertStringContainsString('hero-robot-stage', $content);
+
+        // The hero section should contain visible text immediately after the navbar.
+        $this->assertGreaterThan(
+            1500,
+            strlen(strip_tags($content)),
+            'Homepage rendered without meaningful text content.'
+        );
+    }
+
     public function test_homepage_injects_vite_assets(): void
     {
         $response = $this->get('/');

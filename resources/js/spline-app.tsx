@@ -1,6 +1,14 @@
 import * as React from 'react';
+import { Suspense, lazy } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { SplineSceneBasic } from '@/components/ui/spline-demo';
+
+// Lazy-load the heavy Spline hero so the initial bundle stays small and
+// Suspense can show a fallback while the scene code is downloading.
+const SplineSceneBasic = lazy(() =>
+    import('@/components/ui/spline-demo').then((module) => ({
+        default: module.SplineSceneBasic,
+    })),
+);
 
 /**
  * Static placeholder shown when the 3D scene fails to load.
@@ -23,6 +31,20 @@ function StaticPlaceholder() {
             <p className="text-text-secondary text-sm text-center max-w-md">
                 Interactive 3D experience is currently unavailable.
             </p>
+        </div>
+    );
+}
+
+/**
+ * Suspense fallback. It shows a loading spinner indefinitely; a hard timeout
+ * was removed because it permanently masked recoverable transient errors
+ * (slow network, WebGL context restore, bfcache restore).
+ */
+function LoadingFallback() {
+    return (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-[#1a1a1a] rounded-xl p-6 gap-3">
+            <div className="w-10 h-10 border-4 border-gold-400/20 border-t-gold-400 rounded-full animate-spin" />
+            <p className="text-text-secondary text-sm">Loading 3D scene...</p>
         </div>
     );
 }
@@ -109,7 +131,9 @@ function mountSplineApp() {
 
     root.render(
         <SplineErrorBoundary key={`boundary-${attempt}`} fallback={<StaticPlaceholder />}>
-            <SplineSceneBasic key={`scene-${attempt}`} />
+            <Suspense fallback={<LoadingFallback />}>
+                <SplineSceneBasic key={`scene-${attempt}`} />
+            </Suspense>
         </SplineErrorBoundary>,
     );
 }

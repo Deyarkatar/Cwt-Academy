@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { SplineRuntime } from '@/components/ui/spline-runtime';
 
 function useHeroData() {
@@ -29,40 +29,7 @@ function useHeroData() {
 }
 
 function SplineStage({ className, scene }: { className: string; scene: string }) {
-    const [loaded, setLoaded] = useState(false);
-    const [hasError, setHasError] = useState(false);
-
-    return (
-        <div className={`${className} relative`}>
-            {!loaded && !hasError && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                    <div className="w-24 h-24 rounded-full bg-gold-400/10 flex items-center justify-center animate-pulse">
-                        <span className="material-symbols-outlined text-4xl text-gold-400">3d_rotation</span>
-                    </div>
-                    <p className="text-text-secondary text-sm">Loading 3D robot...</p>
-                </div>
-            )}
-            {hasError && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[#1a1a1a] rounded-xl p-6">
-                    <div className="w-24 h-24 rounded-full bg-gold-400/10 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-4xl text-gold-400">3d_rotation</span>
-                    </div>
-                    <p className="text-white font-semibold text-lg">Cwt Academy</p>
-                    <p className="text-text-secondary text-sm text-center max-w-md">
-                        Interactive 3D experience is currently unavailable.
-                    </p>
-                </div>
-            )}
-            <div className={`absolute inset-0 ${loaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}>
-                <SplineRuntime
-                    scene={scene}
-                    className="w-full h-full"
-                    onLoad={() => setLoaded(true)}
-                    onError={() => setHasError(true)}
-                />
-            </div>
-        </div>
-    );
+    return <SplineRuntime scene={scene} className={className} />;
 }
 
 export function SplineSceneBasic() {

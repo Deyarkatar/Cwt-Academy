@@ -4,11 +4,9 @@ import { Application } from '@splinetool/runtime';
 interface SplineRuntimeProps {
     scene: string;
     className?: string;
-    onLoad?: () => void;
-    onError?: (message: string) => void;
 }
 
-export function SplineRuntime({ scene, className, onLoad, onError }: SplineRuntimeProps) {
+export function SplineRuntime({ scene, className }: SplineRuntimeProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [status, setStatus] = useState<'idle' | 'loading' | 'loaded' | 'error'>('idle');
     const [errorMsg, setErrorMsg] = useState('');
@@ -62,7 +60,6 @@ export function SplineRuntime({ scene, className, onLoad, onError }: SplineRunti
                 // eslint-disable-next-line no-console
                 console.error('[SplineRuntime] Failed to create Application:', msg);
                 safeSetError('WebGL init failed: ' + msg);
-                onError?.('WebGL init failed: ' + msg);
                 return;
             }
 
@@ -73,7 +70,6 @@ export function SplineRuntime({ scene, className, onLoad, onError }: SplineRunti
                     // eslint-disable-next-line no-console
                     console.log('[SplineRuntime] Scene loaded successfully');
                     safeSetStatus('loaded');
-                    onLoad?.();
                 })
                 .catch((err: unknown) => {
                     if (cancelled || disposed) return;
@@ -81,7 +77,6 @@ export function SplineRuntime({ scene, className, onLoad, onError }: SplineRunti
                     // eslint-disable-next-line no-console
                     console.error('[SplineRuntime] Scene load failed:', msg, err);
                     safeSetError('Scene load failed: ' + msg);
-                    onError?.('Scene load failed: ' + msg);
                 });
         };
 

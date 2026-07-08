@@ -29,42 +29,32 @@ function useHeroData() {
 
 function SplineStage({ className, scene }: { className: string; scene: string }) {
     const [shouldRender, setShouldRender] = useState(false);
-    const [skipped, setSkipped] = useState(false);
 
     useEffect(() => {
-        // Skip heavy 3D on low-end / mobile / reduced-motion
+        // Skip heavy 3D on low-end / mobile / reduced-motion, but keep the
+        // static robot image visible underneath.
         const isLowEnd = 'deviceMemory' in navigator && (navigator as any).deviceMemory < 4;
         const isMobile = window.matchMedia('(pointer: coarse)').matches;
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        if (isLowEnd || (isMobile && prefersReduced)) {
-            setSkipped(true);
-            return;
+        if (! isLowEnd && ! (isMobile && prefersReduced)) {
+            setShouldRender(true);
         }
-
-        setShouldRender(true);
     }, []);
 
-    if (skipped) {
-        return (
-            <div className={`${className} flex flex-col items-center justify-center bg-[#1a1a1a] rounded-xl p-6 gap-3`}>
-                <div className="w-24 h-24 rounded-full bg-gold-400/10 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-4xl text-gold-400">3d_rotation</span>
-                </div>
-                <p className="text-white font-semibold text-lg">Cwt Academy</p>
-                <p className="text-text-secondary text-sm text-center max-w-md">
-                    Interactive 3D experience is currently unavailable.
-                </p>
-            </div>
-        );
-    }
-
     return (
-        <div className={className}>
-            {shouldRender ? (
-                <SplineRuntime scene={scene} className="w-full h-full" />
-            ) : (
-                <div className="w-full h-full animate-pulse bg-[#1a1a1a] rounded-xl" />
+        <div className={`${className} relative`}>
+            <img
+                src="/images/hero-robot.svg"
+                alt="Cwt Academy robot"
+                className="absolute inset-0 w-full h-full object-contain drop-shadow-[0_0_40px_rgba(255,215,0,0.15)]"
+                loading="eager"
+                decoding="async"
+            />
+            {shouldRender && (
+                <div className="absolute inset-0">
+                    <SplineRuntime scene={scene} className="w-full h-full" />
+                </div>
             )}
         </div>
     );
@@ -72,7 +62,7 @@ function SplineStage({ className, scene }: { className: string; scene: string })
 
 export function SplineSceneBasic() {
     const data = useHeroData();
-    const isRtl = data.dir === 'rtl';
+    const isRtl = true; // Original design: Kurdish headline on the right, robot on the left.
     const cardRef = useRef<HTMLDivElement>(null);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -110,20 +100,24 @@ export function SplineSceneBasic() {
 
             {/* Static soft gold backlight on the robot side */}
             <div
-                className={`pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 ${
-                    isRtl ? 'left-[-10%]' : 'right-[-10%]'
-                }`}
+                className="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 left-[-10%]"
             />
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[48%_52%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
-                {/* Text column — dir applied here for correct word/punctuation rendering */}
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
+                {/* Robot column (left) */}
+                <div className="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] lg:order-1">
+                    <div className="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4">
+                        <SplineStage
+                            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                            className="w-full h-full"
+                        />
+                    </div>
+                </div>
+
+                {/* Text column (right) */}
                 <div
                     dir={data.dir}
-                    className={`flex flex-col justify-center text-center items-center ${
-                        isRtl
-                            ? 'lg:order-2 lg:text-right lg:items-end'
-                            : 'lg:order-1 lg:text-left lg:items-start'
-                    }`}
+                    className="flex flex-col justify-center text-center items-center lg:order-2 lg:text-right lg:items-end"
                 >
                     <h1
                         className="font-extrabold text-white tracking-tight hero-title-display"
@@ -142,11 +136,7 @@ export function SplineSceneBasic() {
                         {data.subtitle}
                     </p>
 
-                    <div
-                        className={`mt-8 flex flex-wrap gap-4 justify-center ${
-                            isRtl ? 'lg:justify-end' : 'lg:justify-start'
-                        }`}
-                    >
+                    <div className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-end">
                         <a
                             href={data.ctaBrowseUrl}
                             className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm bg-gradient-to-br from-[#FFD700] to-[#FFB800] text-[#3a3000] shadow-[0_0_20px_rgba(255,215,0,0.2)] hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] hover:opacity-95 transition-all"
@@ -159,20 +149,6 @@ export function SplineSceneBasic() {
                         >
                             {data.ctaContact}
                         </a>
-                    </div>
-                </div>
-
-                {/* Robot column — Spline stage with fallback */}
-                <div
-                    className={`hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] ${
-                        isRtl ? 'lg:order-1' : 'lg:order-2'
-                    }`}
-                >
-                    <div className="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4">
-                        <SplineStage
-                            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                            className="w-full h-full"
-                        />
                     </div>
                 </div>
             </div>

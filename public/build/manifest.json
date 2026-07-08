@@ -107,7 +107,7 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DAfxGecS.css",
+    "file": "assets/app-B_8tuBOw.css",
     "name": "app",
     "names": [
       "app.css"
@@ -116,7 +116,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-oim_cWPn.js",
+    "file": "assets/app-DlhfsTbk.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -124,11 +124,11 @@
       "_rolldown-runtime-QTnfLwEv.js"
     ],
     "css": [
-      "assets/app-DAfxGecS.css"
+      "assets/app-B_8tuBOw.css"
     ]
   },
   "resources/js/components/ui/spline-demo.tsx": {
-    "file": "assets/spline-demo-CKJA_yGU.js",
+    "file": "assets/spline-demo-DfkB-i9B.js",
     "name": "spline-demo",
     "src": "resources/js/components/ui/spline-demo.tsx",
     "isDynamicEntry": true,
@@ -148,7 +148,7 @@
     ]
   },
   "resources/js/spline-app.tsx": {
-    "file": "assets/spline-app-Drajle2E.js",
+    "file": "assets/spline-app-Do6IWbDn.js",
     "name": "spline-app",
     "src": "resources/js/spline-app.tsx",
     "isEntry": true,

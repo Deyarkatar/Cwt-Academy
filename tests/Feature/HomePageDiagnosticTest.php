@@ -40,6 +40,11 @@ class HomePageDiagnosticTest extends TestCase
         $this->assertStringContainsString('hero-title-display', $content);
         $this->assertStringContainsString('hero-robot-stage', $content);
 
+        // A real robot fallback image must be present — not an empty placeholder.
+        $this->assertStringContainsString('hero-robot.svg', $content);
+        $this->assertStringNotContainsString('Interactive 3D experience is currently unavailable', $content);
+        $this->assertStringNotContainsString('Loading 3D scene', $content);
+
         // The hero section should contain visible text immediately after the navbar.
         $this->assertGreaterThan(
             1500,
@@ -58,7 +63,7 @@ class HomePageDiagnosticTest extends TestCase
 
         // In a built (production) manifest state, Vite emits /build/assets/... URLs.
         // In a dev state, it emits @vite/client and http://localhost:5173/... URLs.
-        $hasBuildAsset = (bool) preg_match('/\/build\/assets\/app-[A-Za-z0-9]+\.css/', $content);
+        $hasBuildAsset = (bool) preg_match('/\/build\/assets\/app-[A-Za-z0-9_-]+\.css/', $content);
         $hasDevClient = str_contains($content, '@vite/client');
         $hasDevCss = (bool) preg_match('/http:\/\/localhost:5173\/resources\/css\/app\.css/', $content);
         $hasDevJs = (bool) preg_match('/http:\/\/localhost:5173\/resources\/js\/app\.js/', $content);

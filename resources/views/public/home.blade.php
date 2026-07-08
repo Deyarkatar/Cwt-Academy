@@ -18,36 +18,43 @@
         data-dir="{{ app()->getLocale() === 'ku' ? 'rtl' : 'ltr' }}"
     >
         {{-- SSR fallback: rendered immediately so the hero is never blank.
-             The React Spline app will replace this markup once it hydrates. --}}
+             The React Spline app will replace this markup once it hydrates.
+             Original design: robot on the left, Kurdish headline on the right. --}}
         <div class="hero-card group w-full bg-[#0e0e0e] border border-white/10 rounded-[28px] shadow-2xl overflow-hidden relative min-h-[560px] lg:min-h-[680px]">
-            <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 {{ app()->getLocale() === 'ku' ? 'left-[-10%]' : 'right-[-10%]' }}"></div>
+            <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 left-[-10%]"></div>
 
-            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[48%_52%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
-                <div dir="{{ app()->getLocale() === 'ku' ? 'rtl' : 'ltr' }}" class="flex flex-col justify-center text-center items-center {{ app()->getLocale() === 'ku' ? 'lg:order-2 lg:text-right lg:items-end' : 'lg:order-1 lg:text-left lg:items-start' }}">
-                    <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="{{ app()->getLocale() === 'ku' ? 'true' : 'false' }}">
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
+                {{-- Robot visual (left) --}}
+                <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] lg:order-1">
+                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4 flex items-center justify-center">
+                        <img
+                            src="/images/hero-robot.svg"
+                            alt="Cwt Academy robot"
+                            class="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(255,215,0,0.15)]"
+                            loading="eager"
+                            decoding="async"
+                        >
+                    </div>
+                </div>
+
+                {{-- Text content (right) --}}
+                <div dir="rtl" class="flex flex-col justify-center text-center items-center lg:order-2 lg:text-right lg:items-end">
+                    <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="true">
                         {{ __('home.hero_title') }}
                         <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>
                     </h1>
 
-                    <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="{{ app()->getLocale() === 'ku' ? 'true' : 'false' }}">
+                    <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="true">
                         {{ __('home.hero_subtitle') }}
                     </p>
 
-                    <div class="mt-8 flex flex-wrap gap-4 justify-center {{ app()->getLocale() === 'ku' ? 'lg:justify-end' : 'lg:justify-start' }}">
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center lg:justify-end">
                         <a href="/courses" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm bg-gradient-to-br from-[#FFD700] to-[#FFB800] text-[#3a3000] shadow-[0_0_20px_rgba(255,215,0,0.2)] hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] hover:opacity-95 transition-all">
                             {{ __('home.cta_browse') }}
                         </a>
                         <a href="/contact" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm border border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] transition-all">
                             {{ __('home.cta_contact') }}
                         </a>
-                    </div>
-                </div>
-
-                <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] {{ app()->getLocale() === 'ku' ? 'lg:order-1' : 'lg:order-2' }}">
-                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4 flex items-center justify-center bg-[#1a1a1a] rounded-xl">
-                        <div class="w-24 h-24 rounded-full bg-gold-400/10 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-4xl text-gold-400">3d_rotation</span>
-                        </div>
                     </div>
                 </div>
             </div>

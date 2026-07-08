@@ -67,8 +67,10 @@ class HomePageDiagnosticTest extends TestCase
         $this->assertStringContainsString(__('home.hero_title', [], 'ku'), $content);
         $this->assertStringContainsString(__('home.hero_highlight', [], 'ku'), $content);
 
-        // Robot must not be hidden by locale-specific classes.
+        // Robot must not be hidden by locale-specific classes and the robot
+        // stage must contain the real Spline mount / loading indicator.
         $this->assertStringContainsString('hero-robot-stage', $content);
+        $this->assertStringContainsString('3d_rotation', $content);
         $this->assertStringNotContainsString('hero-robot.svg', $content);
 
         // Kurdish layout: robot first (order-1), text second (order-2) on desktop.
@@ -93,8 +95,9 @@ class HomePageDiagnosticTest extends TestCase
         $this->assertStringContainsString(__('home.hero_title', [], 'en'), $content);
         $this->assertStringContainsString(__('home.hero_highlight', [], 'en'), $content);
 
-        // Robot must remain visible.
+        // Robot must remain visible (real Spline mount / loading indicator).
         $this->assertStringContainsString('hero-robot-stage', $content);
+        $this->assertStringContainsString('3d_rotation', $content);
         $this->assertStringNotContainsString('hero-robot.svg', $content);
 
         // English layout: text first (order-1), robot second (order-2) on desktop.

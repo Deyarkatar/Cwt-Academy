@@ -107,7 +107,7 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-dCMjXnOh.css",
+    "file": "assets/app-CWunZ49Q.css",
     "name": "app",
     "names": [
       "app.css"
@@ -116,7 +116,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-C9I7gosP.js",
+    "file": "assets/app-CJ-Txku-.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -124,17 +124,16 @@
       "_rolldown-runtime-QTnfLwEv.js"
     ],
     "css": [
-      "assets/app-dCMjXnOh.css"
+      "assets/app-CWunZ49Q.css"
     ]
   },
-  "resources/js/components/ui/spline-demo.tsx": {
-    "file": "assets/spline-demo-AJ0-n-WP.js",
-    "name": "spline-demo",
-    "src": "resources/js/components/ui/spline-demo.tsx",
-    "isDynamicEntry": true,
+  "resources/js/spline-app.tsx": {
+    "file": "assets/spline-app-B3cey3DX.js",
+    "name": "spline-app",
+    "src": "resources/js/spline-app.tsx",
+    "isEntry": true,
     "imports": [
-      "_rolldown-runtime-QTnfLwEv.js",
-      "resources/js/spline-app.tsx"
+      "_rolldown-runtime-QTnfLwEv.js"
     ],
     "dynamicImports": [
       "node_modules/@splinetool/runtime/build/navmesh.js",
@@ -145,18 +144,6 @@
       "node_modules/@splinetool/runtime/build/opentype.js",
       "node_modules/@splinetool/runtime/build/ui.js",
       "node_modules/@splinetool/runtime/build/gaussian-splat-compression.js"
-    ]
-  },
-  "resources/js/spline-app.tsx": {
-    "file": "assets/spline-app-DEUeND5G.js",
-    "name": "spline-app",
-    "src": "resources/js/spline-app.tsx",
-    "isEntry": true,
-    "imports": [
-      "_rolldown-runtime-QTnfLwEv.js"
-    ],
-    "dynamicImports": [
-      "resources/js/components/ui/spline-demo.tsx"
     ]
   }
 }

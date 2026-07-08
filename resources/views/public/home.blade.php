@@ -2,6 +2,10 @@
 
 @section('title', 'Cwt Academy - Kurdistan Course Marketplace')
 
+@push('head')
+    <link rel="preload" as="fetch" href="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" crossorigin>
+@endpush
+
 @section('content')
 @php($isKurdish = app()->getLocale() === 'ku')
 <!-- Hero — 3D Card (full-screen) -->
@@ -29,7 +33,12 @@
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
                 {{-- Robot visual --}}
                 <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] {{ $isKurdish ? 'lg:order-1' : 'lg:order-2' }}">
-                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4"></div>
+                    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4 flex flex-col items-center justify-center gap-3">
+                        <div class="w-24 h-24 rounded-full bg-gold-400/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-gold-400">3d_rotation</span>
+                        </div>
+                        <p class="text-text-secondary text-sm">Loading 3D robot...</p>
+                    </div>
                 </div>
 
                 {{-- Text content --}}

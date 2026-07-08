@@ -1,0 +1,162 @@
+{
+  "_fonts-DkuEHybc.css": {
+    "file": "assets/fonts-DkuEHybc.css",
+    "src": "_fonts-DkuEHybc.css"
+  },
+  "_instrument-sans-400-normal-D1W7dsQl.woff": {
+    "file": "assets/instrument-sans-400-normal-D1W7dsQl.woff",
+    "src": "_instrument-sans-400-normal-D1W7dsQl.woff"
+  },
+  "_instrument-sans-400-normal-DRC__1Mx.woff2": {
+    "file": "assets/instrument-sans-400-normal-DRC__1Mx.woff2",
+    "src": "_instrument-sans-400-normal-DRC__1Mx.woff2"
+  },
+  "_instrument-sans-400-normal-Q_nF8v4l.woff2": {
+    "file": "assets/instrument-sans-400-normal-Q_nF8v4l.woff2",
+    "src": "_instrument-sans-400-normal-Q_nF8v4l.woff2"
+  },
+  "_instrument-sans-400-normal-r32jotim.woff": {
+    "file": "assets/instrument-sans-400-normal-r32jotim.woff",
+    "src": "_instrument-sans-400-normal-r32jotim.woff"
+  },
+  "_instrument-sans-500-normal-CAxz3nsc.woff": {
+    "file": "assets/instrument-sans-500-normal-CAxz3nsc.woff",
+    "src": "_instrument-sans-500-normal-CAxz3nsc.woff"
+  },
+  "_instrument-sans-500-normal-CTEe1bJa.woff2": {
+    "file": "assets/instrument-sans-500-normal-CTEe1bJa.woff2",
+    "src": "_instrument-sans-500-normal-CTEe1bJa.woff2"
+  },
+  "_instrument-sans-500-normal-Dk9ku72i.woff2": {
+    "file": "assets/instrument-sans-500-normal-Dk9ku72i.woff2",
+    "src": "_instrument-sans-500-normal-Dk9ku72i.woff2"
+  },
+  "_instrument-sans-500-normal-Z6ESRlEs.woff": {
+    "file": "assets/instrument-sans-500-normal-Z6ESRlEs.woff",
+    "src": "_instrument-sans-500-normal-Z6ESRlEs.woff"
+  },
+  "_instrument-sans-600-normal-B7fBEWYG.woff2": {
+    "file": "assets/instrument-sans-600-normal-B7fBEWYG.woff2",
+    "src": "_instrument-sans-600-normal-B7fBEWYG.woff2"
+  },
+  "_instrument-sans-600-normal-B9e8oLYv.woff": {
+    "file": "assets/instrument-sans-600-normal-B9e8oLYv.woff",
+    "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
+  },
+  "_instrument-sans-600-normal-BsaQcF38.woff2": {
+    "file": "assets/instrument-sans-600-normal-BsaQcF38.woff2",
+    "src": "_instrument-sans-600-normal-BsaQcF38.woff2"
+  },
+  "_instrument-sans-600-normal-DMks36a2.woff": {
+    "file": "assets/instrument-sans-600-normal-DMks36a2.woff",
+    "src": "_instrument-sans-600-normal-DMks36a2.woff"
+  },
+  "_rolldown-runtime-QTnfLwEv.js": {
+    "file": "assets/rolldown-runtime-QTnfLwEv.js",
+    "name": "rolldown-runtime"
+  },
+  "node_modules/@splinetool/runtime/build/boolean.js": {
+    "file": "assets/boolean-CPUkAZSF.js",
+    "name": "boolean",
+    "src": "node_modules/@splinetool/runtime/build/boolean.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@splinetool/runtime/build/gaussian-splat-compression.js": {
+    "file": "assets/gaussian-splat-compression-c0WMSbNU.js",
+    "name": "gaussian-splat-compression",
+    "src": "node_modules/@splinetool/runtime/build/gaussian-splat-compression.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@splinetool/runtime/build/howler.js": {
+    "file": "assets/howler-DwsNuN2p.js",
+    "name": "howler",
+    "src": "node_modules/@splinetool/runtime/build/howler.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-QTnfLwEv.js"
+    ]
+  },
+  "node_modules/@splinetool/runtime/build/navmesh.js": {
+    "file": "assets/navmesh-Dk7LWQ28.js",
+    "name": "navmesh",
+    "src": "node_modules/@splinetool/runtime/build/navmesh.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@splinetool/runtime/build/opentype.js": {
+    "file": "assets/opentype-DMCKKUly.js",
+    "name": "opentype",
+    "src": "node_modules/@splinetool/runtime/build/opentype.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@splinetool/runtime/build/physics.js": {
+    "file": "assets/physics-dx10GjQ5.js",
+    "name": "physics",
+    "src": "node_modules/@splinetool/runtime/build/physics.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@splinetool/runtime/build/process.js": {
+    "file": "assets/process-BKxNbewV.js",
+    "name": "process",
+    "src": "node_modules/@splinetool/runtime/build/process.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@splinetool/runtime/build/ui.js": {
+    "file": "assets/ui-QRd9je-9.js",
+    "name": "ui",
+    "src": "node_modules/@splinetool/runtime/build/ui.js",
+    "isDynamicEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-rfg8YDfH.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-McI42Imo.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_rolldown-runtime-QTnfLwEv.js"
+    ],
+    "css": [
+      "assets/app-rfg8YDfH.css"
+    ]
+  },
+  "resources/js/components/ui/spline-demo.tsx": {
+    "file": "assets/spline-demo-CKJA_yGU.js",
+    "name": "spline-demo",
+    "src": "resources/js/components/ui/spline-demo.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_rolldown-runtime-QTnfLwEv.js",
+      "resources/js/spline-app.tsx"
+    ],
+    "dynamicImports": [
+      "node_modules/@splinetool/runtime/build/navmesh.js",
+      "node_modules/@splinetool/runtime/build/physics.js",
+      "node_modules/@splinetool/runtime/build/process.js",
+      "node_modules/@splinetool/runtime/build/boolean.js",
+      "node_modules/@splinetool/runtime/build/howler.js",
+      "node_modules/@splinetool/runtime/build/opentype.js",
+      "node_modules/@splinetool/runtime/build/ui.js",
+      "node_modules/@splinetool/runtime/build/gaussian-splat-compression.js"
+    ]
+  },
+  "resources/js/spline-app.tsx": {
+    "file": "assets/spline-app-Drajle2E.js",
+    "name": "spline-app",
+    "src": "resources/js/spline-app.tsx",
+    "isEntry": true,
+    "imports": [
+      "_rolldown-runtime-QTnfLwEv.js"
+    ],
+    "dynamicImports": [
+      "resources/js/components/ui/spline-demo.tsx"
+    ]
+  }
+}

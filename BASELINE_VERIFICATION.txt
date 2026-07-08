@@ -1,0 +1,339 @@
+=== php artisan test ===
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+   PASS  Tests\Feature\AdminAccountLockoutTest
+  ✓ account lockout after five failures                                  0.15s  
+  ✓ success clears lockout                                               0.01s  
+  ✓ admin login returns 423 when locked                                  0.02s  
+  ✓ lockout records failure count                                        0.01s  
+  ✓ suspicious login logging on high attempts                            0.01s  
+
+   PASS  Tests\Feature\AdminApprovalTest
+  ✓ admin can approve valid payment proof                                9.90s  
+  ✓ admin cannot approve wrong amount                                    0.04s  
+  ✓ admin cannot approve with payment proof from another request         0.05s  
+  ✓ duplicate approval does not create duplicate telegram grant          0.06s  
+  ✓ approval creates manual telegram access pending                      0.05s  
+  ✓ rejected request does not create access                              0.05s  
+  ✓ admin can mark access added                                          0.07s  
+  ✓ admin can revoke access                                              0.07s  
+  ✓ revoked access is not shown as valid                                 0.06s  
+
+   PASS  Tests\Feature\AdminAuthTest
+  ✓ admin can login with valid credentials                               0.04s  
+  ✓ unauthorized user cannot access admin apis                           0.02s  
+  ✓ suspended user cannot login                                          0.03s  
+  ✓ finance manager can access payment endpoints                         0.03s  
+  ✓ finance manager cannot manage admin users                            0.03s  
+
+   PASS  Tests\Feature\AdminWebActionsTest
+  ✓ admin can approve request via web                                    0.06s  
+  ✓ admin can reject request via web                                     0.05s  
+  ✓ finance manager can approve request via web                          0.05s  
+  ✓ student cannot access admin actions                                  0.04s  
+  ✓ guest cannot access admin actions                                    0.03s  
+  ✓ admin can mark telegram access added via web                         0.06s  
+  ✓ admin can revoke telegram access via web                             0.05s  
+  ✓ approve writes audit log                                             0.05s  
+  ✓ reject writes audit log                                              0.05s  
+  ✓ web actions require post method                                      0.28s  
+  ✓ reject requires reason                                               0.04s  
+  ✓ revoke requires reason                                               0.05s  
+
+   PASS  Tests\Feature\AuditLogTest
+  ✓ audit log is written for sensitive actions                           0.04s  
+  ✓ audit logs are queryable by admin                                    0.03s  
+
+   PASS  Tests\Feature\Auth\EmailVerificationTest
+  ✓ verification email sent on registration                              0.03s  
+  ✓ unverified user redirected from dashboard                            0.03s  
+  ✓ verified user can access dashboard                                   0.03s  
+  ✓ email can be verified                                                0.03s  
+  ✓ verification link cannot be reused                                   0.03s  
+  ✓ unauthenticated user cannot resend verification                      0.02s  
+
+   PASS  Tests\Feature\CacheStampedePreventionTest
+  ✓ course listing is cached                                             0.05s  
+  ✓ page number is capped                                                0.05s  
+  ✓ search input is normalized and truncated                             0.03s  
+  ✓ list cache can be flushed                                            0.05s  
+  ✓ slug cache is isolated                                               0.04s  
+  ✓ max page limits cache cardinality                                    0.19s  
+
+   PASS  Tests\Feature\CourseCacheInvalidationTest
+  ✓ course update busts list cache                                       0.05s  
+  ✓ course update busts slug cache                                       0.04s  
+  ✓ course archive busts slug and list cache                             0.04s  
+  ✓ featured home cache is bumped by version update                      0.03s  
+
+   PASS  Tests\Feature\CourseRequestTest
+  ✓ course request can be created for active course                      0.05s  
+  ✓ course request cannot be created for archived course                 0.03s  
+  ✓ student can track request by tracking code                           0.03s  
+  ✓ tracking code does not leak other student data                       0.04s  
+
+   PASS  Tests\Feature\CourseSpecificTelegramTest
+  ✓ course detail page does not link to global hardcoded telegram        0.04s  
+  ✓ tracking page shows course a telegram link for course a request      0.05s  
+  ✓ tracking page shows course b telegram link for course b request      0.05s  
+  ✓ tracking page shows fallback when course has no telegram channel     0.04s  
+  ✓ tracking page shows fallback when channel inactive                   0.04s  
+  ✓ request form for course a creates request with correct course id     0.06s  
+  ✓ modal request button links to correct per course request route       0.04s  
+
+   PASS  Tests\Feature\CourseTest
+  ✓ public course list shows only active courses                         0.04s  
+  ✓ public course detail returns delivery explanation                    0.04s  
+
+   PASS  Tests\Feature\CwtAcademyCourseSeederTest
+  ✓ seeder creates three active courses                                  0.06s  
+  ✓ each course has its own active telegram channel                      0.06s  
+  ✓ seeder is idempotent                                                 0.08s  
+  ✓ no two courses share the same telegram url                           0.06s  
+  ✓ each course uses its own telegram url when loaded from route         0.05s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                        0.02s  
+
+   PASS  Tests\Feature\HomePageDiagnosticTest
+  ✓ homepage returns successful response with expected content           0.02s  
+  ✓ homepage injects vite assets                                         0.02s  
+
+   PASS  Tests\Feature\LatestPaymentProofDeterministicTest
+  ✓ latest payment proof returns most recent deterministically           0.04s  
+
+   PASS  Tests\Feature\PublicRequestFlowTest
+  ✓ guest can create course request via web form                         0.05s  
+  ✓ web form redirects to success page with tracking code                0.04s  
+  ✓ success page shows tracking code and status when session bound       0.05s  
+  ✓ success page redirects to track without session binding              0.03s  
+  ✓ student can upload payment proof via web form                        0.04s  
+  ✓ web upload rejects invalid mime                                      0.04s  
+  ✓ web upload rejects oversized file                                    0.04s  
+  ✓ web form validates required fields                                   0.02s  
+  ✓ web form requires city                                               0.04s  
+  ✓ web form requires payment proof                                      0.03s  
+  ✓ web upload requires amount and file                                  0.03s  
+  ✓ invalid tracking code returns not found                              0.02s  
+  ✓ course detail page does not show tracking box before request         0.04s  
+  ✓ course detail page shows tracking box after request                  0.05s  
+  ✓ tracking code is stored per course in session                        0.07s  
+  ✓ tracking box does not expose private data                            0.06s  
+
+   PASS  Tests\Feature\QueueInfrastructureTest
+  ✓ audit log job is dispatchable                                        0.03s  
+  ✓ send verification email job is dispatchable                          0.02s  
+  ✓ cache bust job is dispatchable                                       0.02s  
+  ✓ notification job is dispatchable                                     0.01s  
+  ✓ send verification email job handles missing user                     0.02s  
+  ✓ send verification email job skips verified user                      0.03s  
+  ✓ audit log job unique id is deterministic                             0.02s  
+
+   PASS  Tests\Feature\RateLimitingTest
+  ✓ course request store has rate limit middleware                       0.05s  
+  ✓ payment proof upload has rate limit middleware                       0.05s  
+  ✓ track lookup has rate limit middleware                               0.11s  
+
+   PASS  Tests\Feature\RouteBlankPageDiagnosticTest
+  ✓ public routes render content                                         0.04s  
+  ✓ dynamic course routes render content                                 0.05s  
+  ✓ authenticated student routes render content                          0.03s  
+  ✓ authenticated admin routes render content                            0.04s  
+
+   PASS  Tests\Feature\SecurityHeadersTest
+  ✓ web response includes universal security headers                     0.02s  
+  ✓ non production does not send hsts                                    0.03s  
+  ✓ non production does not send permissions policy                      0.02s  
+  ✓ production enforces cache control on sensitive routes                0.02s  
+
+   PASS  Tests\Feature\StorageSecurityTest
+  ✓ admin can download payment proof                                     0.10s  
+  ✓ finance manager can download payment proof                           0.04s  
+  ✓ student cannot download payment proof                                0.04s  
+  ✓ guest cannot download payment proof                                  0.03s  
+  ✓ payment proofs are stored on local disk                              0.04s  
+  ✓ public cannot access storage directory                               0.02s  
+
+   PASS  Tests\Feature\StudentDashboardTest
+  ✓ dashboard does not show active course before approval                0.06s  
+  ✓ dashboard shows approved course as active after admin approval       0.06s  
+  ✓ active course card shows course title                                0.07s  
+  ✓ active course card shows tracking code and link                      0.06s  
+  ✓ active course card does not expose admin notes                       0.06s  
+  ✓ active course card does not expose payment proof file path           0.06s  
+  ✓ pending request appears in pending section not active                0.05s  
+  ✓ rejected request does not appear as active                           0.06s  
+  ✓ logged in student submission sets user id                            0.04s  
+  ✓ dashboard shows submitted pending request with correct counters      0.06s  
+  ✓ dashboard does not show empty state when request exists              0.05s  
+  ✓ student cannot see other students requests                           0.04s  
+  ✓ dashboard falls back to email for old requests without user id       0.06s  
+  ✓ english dashboard has no raw translation keys                        0.07s  
+  ✓ kurdish dashboard has no raw translation keys                        0.08s  
+
+   PASS  Tests\Feature\TrackingEndpointHardeningTest
+  ✓ tracking without email hash returns limited data                     0.04s  
+  ✓ tracking with valid email hash returns full data                     0.03s  
+  ✓ tracking with invalid email hash returns 404                         0.03s  
+  ✓ tracking rate limit blocks excessive requests                        0.11s  
+  ✓ web tracking without email hash returns limited data                 0.06s  
+
+   PASS  Tests\Feature\TransactionReferenceHashTest
+  ✓ duplicate transaction reference is rejected                          0.05s  
+  ✓ hash is stored in database                                           0.03s  
+  ✓ null reference does not set hash                                     0.03s  
+  ✓ database unique constraint enforced                                  0.03s  
+  ✓ race condition protection with lock                                  0.03s  
+
+   PASS  Tests\Feature\TrustedProxyValidationTest
+  ✓ production requires trusted proxies                                  0.02s  
+  ✓ wildcard proxies rejected in production                              0.02s  
+  ✓ empty proxies allowed in non production                              0.02s  
+
+   PASS  Tests\Feature\UnifiedPaymentProofFlowTest
+  ✓ form creates request and proof in one submit                         0.06s  
+  ✓ form accepts jpg png webp pdf                                        0.08s  
+  ✓ form rejects invalid mime                                            0.03s  
+  ✓ form rejects oversized file                                          0.04s  
+  ✓ proof is stored privately on local disk                              0.04s  
+  ✓ storage directory is not publicly accessible                         0.02s  
+  ✓ admin can download payment proof via web route                       0.05s  
+  ✓ guest cannot download payment proof via web route                    0.06s  
+  ✓ student cannot download payment proof via web route                  0.05s  
+  ✓ success page shows full unified message                              0.06s  
+  ✓ form renders payment methods section                                 0.04s  
+
+   PASS  Tests\Feature\UploadSecurityTest
+  ✓ upload rejects invalid mime                                          0.04s  
+  ✓ upload rejects oversized file                                        0.04s  
+  ✓ upload uses mime derived extension not client filename               0.04s  
+
+   PASS  Tests\Feature\WebAuthTest
+  ✓ login route is named login                                           0.02s  
+  ✓ login page renders                                                   0.03s  
+  ✓ admin can login via web session                                      0.04s  
+  ✓ student login redirects to dashboard not admin                       0.03s  
+  ✓ login rejects invalid credentials                                    0.23s  
+  ✓ suspended user cannot login via web                                  0.03s  
+  ✓ unauthenticated user redirected to login from admin                  0.02s  
+  ✓ unauthenticated user redirected to login from dashboard              0.02s  
+  ✓ student blocked from admin pages                                     0.02s  
+  ✓ admin can access all admin pages                                     0.05s  
+  ✓ logout clears session                                                0.03s  
+  ✓ register creates student user                                        0.06s  
+  ✓ register rejects duplicate email                                     0.03s  
+  ✓ register requires password confirmation                              0.02s  
+
+  Tests:    168 passed (546 assertions)
+  Duration: 17.63s
+
+=== ./vendor/bin/pint --test ===
+
+  ...............................................................⨯........................................................................⨯..................................................................................
+  .........................................
+
+  ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Laravel  
+    FAIL   ........................................................................................................................................................................................ 260 files, 2 style issues  
+  ⨯ app/Http/Controllers/WebAuthn/WebAuthnLoginController.php fully_qualified_strict_types, unary_operator_spaces, not_operator_with_successor_space, no_extra_blank_lines, ordered_imports, blank_line_between_import_group…  
+  ⨯ tests/Feature/RouteBlankPageDiagnosticTest.php                                                                                                                                                               single_quote  
+
+=== ./vendor/bin/phpstan analyse ===
+Note: Using configuration file /home/fsociety/Cwt_academy/phpstan.neon.
+ ------ ------------------------------------------------------------------- 
+  Line   app/Http/Controllers/WebAuthn/WebAuthnPasskeyController.php        
+ ------ ------------------------------------------------------------------- 
+  :16    Cannot call method webAuthnCredentials() on App\Models\User|null.  
+         🪪  method.nonObject                                               
+  :30    Cannot call method webAuthnCredentials() on App\Models\User|null.  
+         🪪  method.nonObject                                               
+ ------ ------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------------------------- 
+  Line   tests/Feature/HomePageDiagnosticTest.php                                             
+ ------ ------------------------------------------------------------------------------------- 
+  :28    Parameter #2 $subject of function preg_match expects string, string|false given.     
+         🪪  argument.type                                                                    
+  :29    Parameter #1 $haystack of function str_contains expects string, string|false given.  
+         🪪  argument.type                                                                    
+  :30    Parameter #2 $subject of function preg_match expects string, string|false given.     
+         🪪  argument.type                                                                    
+  :31    Parameter #2 $subject of function preg_match expects string, string|false given.     
+         🪪  argument.type                                                                    
+  :37    Parameter #1 $string of function substr expects string, string|false given.          
+         🪪  argument.type                                                                    
+ ------ ------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------------------------------------------------- 
+  Line   tests/Feature/RouteBlankPageDiagnosticTest.php                                                                                    
+ ------ ---------------------------------------------------------------------------------------------------------------------------------- 
+  :51    Parameter #2 $content of method Tests\Feature\RouteBlankPageDiagnosticTest::assertNotBlank() expects string, string|false given.  
+         🪪  argument.type                                                                                                                 
+  :86    Parameter #2 $content of method Tests\Feature\RouteBlankPageDiagnosticTest::assertNotBlank() expects string, string|false given.  
+         🪪  argument.type                                                                                                                 
+  :117   Parameter #2 $content of method Tests\Feature\RouteBlankPageDiagnosticTest::assertNotBlank() expects string, string|false given.  
+         🪪  argument.type                                                                                                                 
+  :149   Parameter #2 $content of method Tests\Feature\RouteBlankPageDiagnosticTest::assertNotBlank() expects string, string|false given.  
+         🪪  argument.type                                                                                                                 
+ ------ ---------------------------------------------------------------------------------------------------------------------------------- 
+
+ [ERROR] Found 11 errors                                                                                                
+
+=== npm run build ===
+
+> build
+> vite build
+
+vite v8.1.3 building client environment for production...
+[2Ktransforming...✓ 79 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                                         5.76 kB │ gzip:   0.88 kB
+public/build/assets/instrument-sans-400-normal-Q_nF8v4l.woff2      6.85 kB
+public/build/assets/instrument-sans-600-normal-BsaQcF38.woff2      6.94 kB
+public/build/assets/instrument-sans-500-normal-CTEe1bJa.woff2      6.98 kB
+public/build/assets/instrument-sans-400-normal-r32jotim.woff       8.96 kB
+public/build/assets/instrument-sans-500-normal-CAxz3nsc.woff       9.06 kB
+public/build/assets/instrument-sans-600-normal-DMks36a2.woff       9.10 kB
+public/build/fonts-manifest.json                                  11.19 kB │ gzip:   0.97 kB
+public/build/assets/instrument-sans-400-normal-DRC__1Mx.woff2     16.86 kB
+public/build/assets/instrument-sans-500-normal-Dk9ku72i.woff2     17.23 kB
+public/build/assets/instrument-sans-600-normal-B7fBEWYG.woff2     17.40 kB
+public/build/assets/instrument-sans-400-normal-D1W7dsQl.woff      21.24 kB
+public/build/assets/instrument-sans-500-normal-Z6ESRlEs.woff      21.65 kB
+public/build/assets/instrument-sans-600-normal-B9e8oLYv.woff      21.67 kB
+public/build/assets/fonts-DkuEHybc.css                             4.76 kB │ gzip:   0.55 kB
+public/build/assets/app-rfg8YDfH.css                              88.47 kB │ gzip:  17.30 kB
+public/build/assets/rolldown-runtime-QTnfLwEv.js                   0.69 kB │ gzip:   0.42 kB
+public/build/assets/howler-DwsNuN2p.js                            26.63 kB │ gzip:   7.85 kB
+public/build/assets/app-McI42Imo.js                               46.64 kB │ gzip:  17.68 kB
+public/build/assets/boolean-CPUkAZSF.js                           47.43 kB │ gzip:  16.77 kB
+public/build/assets/navmesh-Dk7LWQ28.js                           55.06 kB │ gzip:  10.90 kB
+public/build/assets/process-BKxNbewV.js                           59.08 kB │ gzip:  20.36 kB
+public/build/assets/gaussian-splat-compression-c0WMSbNU.js        82.32 kB │ gzip:  23.21 kB
+public/build/assets/ui-QRd9je-9.js                                89.70 kB │ gzip:  27.67 kB
+public/build/assets/opentype-DMCKKUly.js                         170.04 kB │ gzip:  50.65 kB
+public/build/assets/spline-app-Drajle2E.js                       193.40 kB │ gzip:  61.13 kB
+public/build/assets/physics-dx10GjQ5.js                        1,987.83 kB │ gzip: 733.92 kB
+public/build/assets/spline-demo-CKJA_yGU.js                    2,036.20 kB │ gzip: 571.54 kB
+
+✓ built in 1.15s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+=== php artisan route:cache ===
+
+   INFO  Routes cached successfully.  
+
+=== php artisan config:cache ===
+
+   INFO  Configuration cached successfully.  
+
+=== php artisan view:cache ===
+
+
+   INFO  Blade templates cached successfully.  
+

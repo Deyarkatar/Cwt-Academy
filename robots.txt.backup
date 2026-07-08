@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin
+Disallow: /api/admin
+Disallow: /login
+Disallow: /dashboard
+Disallow: /.env
+Disallow: /.htaccess

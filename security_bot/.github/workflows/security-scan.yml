@@ -1,0 +1,62 @@
+name: Security Scan — Self-Test
+
+on:
+  schedule:
+    # Run every Sunday at 02:00 UTC
+    - cron: "0 2 * * 0"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Target URL to scan"
+        required: true
+        default: "https://staging.example.com"
+      modules:
+        description: "Comma-separated module list"
+        required: false
+        default: "fuzz,sqli,xss,csrf,ssrf,cors"
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create config
+        run: |
+          cat > config.yaml <<EOF
+          name: "GitHub Actions Security Scan"
+          safety:
+            allowed_hosts:
+              - "${{ github.event.inputs.target }}"
+            max_requests_per_second: 5.0
+            safe_mode: true
+            skip_destructive: true
+          modules:
+            - ${{ github.event.inputs.modules }}
+          output_dir: "./reports"
+          EOF
+
+      - name: Run security scan
+        run: |
+          python main.py scan "${{ github.event.inputs.target }}" -c config.yaml
+
+      - name: Upload SARIF report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/*.sarif
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-reports
+          path: reports/

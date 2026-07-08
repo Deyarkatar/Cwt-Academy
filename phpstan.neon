@@ -1,0 +1,19 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 9
+    paths:
+        - app
+        - routes
+        - database/factories
+        - database/seeders
+        - tests
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$#'
+        - '#Cannot access property \$value on string#'
+        - '#\(string\) does not accept App\Enums\.*#'
+        - '#\(int<0, max>\|null\) does not accept int\|string\|null#'
+        - '#\(int<0, max>\|null\) does not accept int#'

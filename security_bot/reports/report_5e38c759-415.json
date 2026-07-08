@@ -1,0 +1,83 @@
+{
+  "scan_id": "5e38c759-415",
+  "target": "http://127.0.0.1:8000",
+  "started_at": "2026-05-30T20:05:03.885876",
+  "finished_at": "2026-05-30T20:05:26.120457",
+  "modules_run": [
+    "fingerprint",
+    "fuzz"
+  ],
+  "findings": [
+    {
+      "id": "07d638be",
+      "module": "fingerprint",
+      "vector": "info_disclosure",
+      "severity": "info",
+      "title": "Technology detected: CSRF Protection",
+      "description": "CSRF token meta tag present",
+      "target": "unknown",
+      "confidence": 80,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('content-type', 'text/html; charset=utf-8'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:05:04 GMT'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-TngK7samzQPG5Ku6CpP_jQ' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-TngK7samzQPG5Ku6CpP_jQ' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-TngK7samzQPG5Ku6CpP_jQ' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-TngK7samzQPG5Ku6CpP_jQ' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-response-cache', 'MISS'), ('x-request-id', 'c1b6e2cf-b63b-4908-b9d1-eacef4dc0af7'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6IjhIcFdSMHozTzBmT1RzNzQ0citTWVE9PSIsInZhbHVlIjoiMG5WeUV6Z1EzdEJCWDdsdkNiM2hOQW9jZGpPcVRlVG5pbVNZWUhBT1VBUnVVeWdRRExBRDRMZmNNd3pUbStuY3hpc2wrWmhoUCtDMkFBRWZCUjk0ZWV2TWdGcE8vaVVEQkMwTTluRitsS0x5bkN5cWtFVDJNUVQ2V0x4SE5jNFQiLCJtYWMiOiI1ZDc1ODAxZjRlMjU5OTU3M2IzNWU3OTUxMGZjZDVhODYxYzk3YmMxZTVlYjA5MWRkNTdjZWQxZjBjOTBlYmRkIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:05:04 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6IlFYL2V1SjhUT0RnQzQyZFRJcCtqN1E9PSIsInZhbHVlIjoiNkloS2xKTThMZHo1OUFENkQ5RWdvL0hWNVJObUVmeUNoYmJNaUJqYWN3MkFLMDU0WXJRSldWTnJyQkNkWE40MnJkSkhmL0tLZE5YMlBTY2paSEJMdGwzNlBmWDJULzkwTGxCYmNnM3cwMnRXODN2a1hBZ3hwckd5ZGxLYU5VZW0iLCJtYWMiOiJiNDViMGM4ZTVhYWEyNzI3ZDg4NWVhYzI5YzJlNTMzYmI0OWQ5NmMyNzRjNzI1NWZmOTU3YWIyN2JjMTE0ZTA3IiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:05:04 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\" dir=\"ltr\" class=\"dark\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"csrf-token\" content=\"Z67a6pWTCQKzc4Bn1y4551w6UOBvy9O7QWFcVBAf\">\n    <title>Cwt Academy - Kurdistan Course Marketplace</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n    <link rel=\"preload\" as=\"style\" href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght@100..700&display=swap\">\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght@100..700&display=swap\" rel=\"stylesheet\">\n        <link rel=\"preload\" as=\"style\" href=\"http://127.0.0.1:8000/build/assets/app-DGx2GjLD.css\" nonce=\"TngK7samzQPG5Ku6CpP_jQ\" /><link rel=\"modulepreload\" as=\"script\" href=\"http://127.0.0.1:8000/build/assets/app-Dledh2Da.js\" nonce=\"TngK7samzQPG5Ku6CpP_jQ\" /><link rel=\"modulepreload\" as=\"script\" href=\"http://127.0.0.1:8000/build/assets/chunk-Dk7t3yRR.js\" nonce=\"TngK7samzQPG5Ku6CpP_jQ\" /><link rel=\"stylesheet\" href=\"http://127.0.0.1:8000/build/assets/app-DGx2GjLD.css\" nonce=\"TngK7samzQPG5Ku6CpP_jQ\" /><script type=\"module\" src=\"http://127.0.0.1:8000/build/assets/app-Dledh2Da.js\" nonce=\"TngK7samzQPG5Ku6CpP_jQ\"></script>        <meta name=\"csp-nonce\" content=\"TngK7samzQPG5Ku6CpP_jQ\">\n    </head>\n<body class=\"bg-bg-base text-text-primary font-sans antialiased min-h-screen flex flex-col selection:bg-gold-400 selection:text-text-on-gold\">\n    <header class=\"bg-bg-base/80 backdrop-blur-xl fixed top-0 w-full z-50\">\n    <div class=\"flex justify-between items-center h-20 px-4 sm:px-6 max-w-(--spacin",
+          "trigger_payload": null,
+          "description": "Body signature matched: CSRF Protection",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:05:04.022543",
+      "meta": {}
+    },
+    {
+      "id": "32dcd949",
+      "module": "fuzz",
+      "vector": "info_disclosure",
+      "severity": "medium",
+      "title": "Exposed endpoint found: /robots.txt.bak",
+      "description": "GET http://127.0.0.1:8000/robots.txt.bak returned 200 OK. Body snippet: User-agent: *\nDisallow: /admin\nDisallow: /api/admin\nDisallow: /login\nDisallow: /dashboard\nDisallow: /.env\nDisallow: /.htaccess\n",
+      "target": "unknown",
+      "confidence": 70,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000/robots.txt.bak\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders({'host': '127.0.0.1:8000', 'date': 'Sat, 30 May 2026 20:05:12 GMT', 'connection': 'close', 'content-length': '127'})\n\nUser-agent: *\nDisallow: /admin\nDisallow: /api/admin\nDisallow: /login\nDisallow: /dashboard\nDisallow: /.env\nDisallow: /.htaccess\n",
+          "trigger_payload": null,
+          "description": "Hidden endpoint /robots.txt.bak is accessible",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": "Restrict access or remove exposed administrative/debug endpoints.",
+      "references": [],
+      "timestamp": "2026-05-30T20:05:12.878752",
+      "meta": {}
+    },
+    {
+      "id": "b851ec68",
+      "module": "fuzz",
+      "vector": "info_disclosure",
+      "severity": "medium",
+      "title": "Exposed endpoint found: /.htaccess.bak",
+      "description": "GET http://127.0.0.1:8000/.htaccess.bak returned 200 OK. Body snippet: <IfModule mod_rewrite.c>\n    <IfModule mod_negotiation.c>\n        Options -MultiViews -Indexes\n    </IfModule>\n\n    # Deny access to dotfiles (.htaccess, .env, etc.)\n    RewriteRule ^\\. - [F,L]\n\n    R",
+      "target": "unknown",
+      "confidence": 70,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000/.htaccess.bak\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders({'host': '127.0.0.1:8000', 'date': 'Sat, 30 May 2026 20:05:14 GMT', 'connection': 'close', 'content-length': '823'})\n\n<IfModule mod_rewrite.c>\n    <IfModule mod_negotiation.c>\n        Options -MultiViews -Indexes\n    </IfModule>\n\n    # Deny access to dotfiles (.htaccess, .env, etc.)\n    RewriteRule ^\\. - [F,L]\n\n    RewriteEngine On\n\n    # Handle Authorization Header\n    RewriteCond %{HTTP:Authorization} .\n    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]\n\n    # Handle X-XSRF-Token Header\n    RewriteCond %{HTTP:x-xsrf-token} .\n    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]\n\n    # Redirect Trailing Slashes If Not A Folder...\n    RewriteCond %{REQUEST_FILENAME} !-d\n    RewriteCond %{REQUEST_URI} (.+)/$\n    RewriteRule ^ %1 [L,R=301]\n\n    # Send Requests To Front Controller...\n    RewriteCond %{REQUEST_FILENAME} !-d\n    RewriteCond %{REQUEST_FILENAME} !-f\n    RewriteRule ^ index.php [L]\n</IfModule>\n",
+          "trigger_payload": null,
+          "description": "Hidden endpoint /.htaccess.bak is accessible",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": "Restrict access or remove exposed administrative/debug endpoints.",
+      "references": [],
+      "timestamp": "2026-05-30T20:05:14.829460",
+      "meta": {}
+    }
+  ],
+  "errors": [],
+  "stats": {}
+}

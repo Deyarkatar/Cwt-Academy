@@ -1,0 +1,7 @@
+Contact: mailto:security@cwtacademy.com
+Contact: https://cwtacademy.com/contact
+Expires: 2027-05-26T00:00:00.000Z
+Acknowledgments: https://cwtacademy.com/security/hall-of-fame
+Policy: https://cwtacademy.com/security/policy
+Preferred-Languages: en, ku
+Canonical: https://cwtacademy.com/.well-known/security.txt

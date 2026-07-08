@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  scanner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: security-bot:latest
+    container_name: security-assessment-bot
+    volumes:
+      - ./reports:/app/reports
+      - ./config.yaml:/app/config.yaml:ro
+      - ./payloads:/app/payloads:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=INFO
+    # By default show help; override with scan command:
+    # docker compose run --rm scanner scan https://target.local -m sqli xss
+    command: ["--help"]
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    networks:
+      - scanner_net
+    restart: "no"
+
+  # Optional: Redis for distributed rate-limiting or caching
+  redis:
+    image: redis:7-alpine
+    container_name: scanner-redis
+    networks:
+      - scanner_net
+    restart: unless-stopped
+
+networks:
+  scanner_net:
+    driver: bridge

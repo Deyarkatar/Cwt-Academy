@@ -1,0 +1,12 @@
+{
+  "scan_id": "cd35ccbd-353",
+  "target": "http://httpbin.org/get",
+  "started_at": "2026-05-30T19:46:47.623760",
+  "finished_at": "2026-05-30T19:46:49.893066",
+  "modules_run": [
+    "apiversion"
+  ],
+  "findings": [],
+  "errors": [],
+  "stats": {}
+}

@@ -1,0 +1,43 @@
+{
+  "scan_id": "e6f2b522-d01",
+  "target": "http://127.0.0.1:8000",
+  "started_at": "2026-05-30T20:06:13.206922",
+  "finished_at": "2026-05-30T20:06:48.849234",
+  "modules_run": [
+    "sqli",
+    "xss",
+    "cors",
+    "csrf",
+    "redirect",
+    "idor",
+    "fuzz",
+    "fingerprint"
+  ],
+  "findings": [
+    {
+      "id": "0923e186",
+      "module": "fingerprint",
+      "vector": "info_disclosure",
+      "severity": "info",
+      "title": "Technology detected: CSRF Protection",
+      "description": "CSRF token meta tag present",
+      "target": "unknown",
+      "confidence": 80,
+      "evidence": [
+        {
+          "request": "GET http://127.0.0.1:8000\nHeaders({'host': '127.0.0.1:8000', 'accept': '*/*', 'accept-encoding': 'gzip, deflate, br, zstd', 'connection': 'keep-alive', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'})\n\n",
+          "response_snippet": "HTTP 200\nHeaders([('host', '127.0.0.1:8000'), ('connection', 'close'), ('content-type', 'text/html; charset=utf-8'), ('cache-control', 'no-cache, private'), ('date', 'Sat, 30 May 2026 20:06:48 GMT'), ('x-content-type-options', 'nosniff'), ('x-frame-options', 'DENY'), ('referrer-policy', 'strict-origin-when-cross-origin'), ('content-security-policy', \"default-src 'self'; script-src 'self' 'nonce-u0JQBvJaqFI88_1nplfzgg' 'wasm-unsafe-eval' 'unsafe-inline' http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; script-src-elem 'self' 'nonce-u0JQBvJaqFI88_1nplfzgg' 'wasm-unsafe-eval' 'unsafe-inline' https://prod.spline.design https://unpkg.com https://www.gstatic.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src 'self' 'nonce-u0JQBvJaqFI88_1nplfzgg' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; style-src-elem 'self' 'nonce-u0JQBvJaqFI88_1nplfzgg' 'unsafe-inline' https://fonts.googleapis.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173; img-src 'self' data: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prod.spline.design https://unpkg.com https://www.gstatic.com https://challenges.cloudflare.com http://127.0.0.1:5173 http://localhost:5173 http://[::1]:5173 http://127.0.1.1:5173 ws://127.0.0.1:5173 ws://localhost:5173 ws://[::1]:5173 ws://127.0.1.1:5173; frame-src 'self' https://challenges.cloudflare.com; child-src 'self' https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; worker-src 'self' blob: data:; object-src 'none';\"), ('x-xss-protection', '0'), ('x-response-cache', 'MISS'), ('x-request-id', 'f8d78868-dcd2-4315-8cae-a53f148b8708'), ('set-cookie', 'XSRF-TOKEN=eyJpdiI6IjVhTDJEMDVBTEVKWVBIQk92eGlpT1E9PSIsInZhbHVlIjoiU1ROWHAxcXExYnkxWVplcGJRZnhRdGc0Y3Z3QlNtVmVoUmtJZDdJZm85NkpTdzNHMjMvWHV1VHBNVjFrYlZUaHFvQTNTV1B3YWpxTGV3dEduME1EOVhqK0R4QUxuRGtMbzIwMHBvcFlqWGloZlBxaDBneWJqT3Z2UmNFcXBmN3kiLCJtYWMiOiIwM2RhYTMzYWQ1ZWViYWI0YTI4Nzc1MjdlYmZiYjY3ZGUxOTBkYTJhNTNmNTcyZDNiY2NlZjQ2MmE0NTMyMDlhIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:06:48 GMT; Max-Age=7200; path=/; secure; samesite=strict'), ('set-cookie', 'cwt-academy-session=eyJpdiI6InZNalRuSlNBbzZ2dXRrV0R0NmpackE9PSIsInZhbHVlIjoicjdIVSsxeGl5S1ZhWVRkc1ZDREJheFB2a2RaaytNdnlIN1BVVFMvZXo0SmkySEs1RWNZTlEzcnpjRWN3a0FHblpVSS93ZnNwNmRjZXR1Y3dnejBwekZQN1Y4YnE2cXpKU3NycWxqMW5qV2cvR1ZXbEM1Qk1sOXZwU1E4QkgzdG8iLCJtYWMiOiJmM2U4ZjQwNTc0Mjc3OWQ3ODIzOThmYzJkZjcxZDU0YjM1YjJkOGU0MDFlNzY1YmJmZGM1MjQwZmYyOWNmM2RmIiwidGFnIjoiIn0%3D; expires=Sat, 30 May 2026 22:06:48 GMT; Max-Age=7200; path=/; secure; httponly; samesite=strict')])\n\n<!DOCTYPE html>\n<html lang=\"en\" dir=\"ltr\" class=\"dark\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"csrf-token\" content=\"xPDTNNjbWWmtD86cZZ8mzMDtt7Ytl7bXjvD9bCCs\">\n    <title>Cwt Academy - Kurdistan Course Marketplace</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n    <link rel=\"preload\" as=\"style\" href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght@100..700&display=swap\">\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght@100..700&display=swap\" rel=\"stylesheet\">\n        <link rel=\"preload\" as=\"style\" href=\"http://127.0.0.1:8000/build/assets/app-DGx2GjLD.css\" nonce=\"u0JQBvJaqFI88_1nplfzgg\" /><link rel=\"modulepreload\" as=\"script\" href=\"http://127.0.0.1:8000/build/assets/app-Dledh2Da.js\" nonce=\"u0JQBvJaqFI88_1nplfzgg\" /><link rel=\"modulepreload\" as=\"script\" href=\"http://127.0.0.1:8000/build/assets/chunk-Dk7t3yRR.js\" nonce=\"u0JQBvJaqFI88_1nplfzgg\" /><link rel=\"stylesheet\" href=\"http://127.0.0.1:8000/build/assets/app-DGx2GjLD.css\" nonce=\"u0JQBvJaqFI88_1nplfzgg\" /><script type=\"module\" src=\"http://127.0.0.1:8000/build/assets/app-Dledh2Da.js\" nonce=\"u0JQBvJaqFI88_1nplfzgg\"></script>        <meta name=\"csp-nonce\" content=\"u0JQBvJaqFI88_1nplfzgg\">\n    </head>\n<body class=\"bg-bg-base text-text-primary font-sans antialiased min-h-screen flex flex-col selection:bg-gold-400 selection:text-text-on-gold\">\n    <header class=\"bg-bg-base/80 backdrop-blur-xl fixed top-0 w-full z-50\">\n    <div class=\"flex justify-between items-center h-20 px-4 sm:px-6 max-w-(--spacin",
+          "trigger_payload": null,
+          "description": "Body signature matched: CSRF Protection",
+          "screenshot_hint": null
+        }
+      ],
+      "remediation": null,
+      "references": [],
+      "timestamp": "2026-05-30T20:06:48.575775",
+      "meta": {}
+    }
+  ],
+  "errors": [],
+  "stats": {}
+}

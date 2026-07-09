@@ -28,7 +28,7 @@ class HomepageHeroRegressionTest extends TestCase
         $start = strpos($content, 'data-testid="homepage-hero"');
         $this->assertNotFalse($start, 'Hero wrapper not found.');
 
-        return substr($content, $start, 2000);
+        return substr($content, $start, 12000);
     }
 
     private function tagSnippet(string $content, string $testid): string
@@ -75,7 +75,7 @@ class HomepageHeroRegressionTest extends TestCase
         $this->assertStringNotContainsString('تێلیگرامەوە', $content);
     }
 
-    public function test_english_homepage_does_not_contain_bad_robot_assets(): void
+    public function test_english_homepage_uses_real_robot_asset(): void
     {
         $response = $this->getHomepage(['locale' => 'en']);
         $content = $response->getContent();
@@ -83,12 +83,13 @@ class HomepageHeroRegressionTest extends TestCase
 
         $hero = $this->heroSection($content);
 
+        $this->assertStringContainsString('images/hero-robot', $hero, 'Hero must reference the real robot asset.');
+        $this->assertStringContainsString('<img', $hero, 'Hero robot must be a real image element.');
         $this->assertStringNotContainsString('hero-robot.svg', $hero);
         $this->assertStringNotContainsString('cwt_academy-logo.jpg', $hero);
         $this->assertStringNotContainsString('cwt-academy-robot.jpg', $hero);
         $this->assertStringNotContainsString('fake-svg-robot', $hero);
         $this->assertStringNotContainsString('Cwt Academy Robot', $hero);
-        $this->assertStringNotContainsString('<img', $hero);
     }
 
     public function test_english_homepage_has_text_before_robot_in_dom(): void
@@ -150,7 +151,7 @@ class HomepageHeroRegressionTest extends TestCase
         $this->assertStringNotContainsString('delivered through Telegram', $content);
     }
 
-    public function test_kurdish_homepage_does_not_contain_bad_robot_assets(): void
+    public function test_kurdish_homepage_uses_real_robot_asset(): void
     {
         $response = $this->getHomepage(['locale' => 'ku']);
         $content = $response->getContent();
@@ -158,12 +159,13 @@ class HomepageHeroRegressionTest extends TestCase
 
         $hero = $this->heroSection($content);
 
+        $this->assertStringContainsString('images/hero-robot', $hero, 'Hero must reference the real robot asset.');
+        $this->assertStringContainsString('<img', $hero, 'Hero robot must be a real image element.');
         $this->assertStringNotContainsString('hero-robot.svg', $hero);
         $this->assertStringNotContainsString('cwt_academy-logo.jpg', $hero);
         $this->assertStringNotContainsString('cwt-academy-robot.jpg', $hero);
         $this->assertStringNotContainsString('fake-svg-robot', $hero);
         $this->assertStringNotContainsString('Cwt Academy Robot', $hero);
-        $this->assertStringNotContainsString('<img', $hero);
     }
 
     public function test_kurdish_homepage_has_robot_before_text_in_dom(): void
@@ -221,5 +223,25 @@ class HomepageHeroRegressionTest extends TestCase
             $this->assertStringNotContainsString('Loading 3D scene', $hero);
             $this->assertStringNotContainsString('Cwt Academy Robot', $hero);
         }
+    }
+
+    public function test_robot_asset_file_exists_and_is_served(): void
+    {
+        $path = public_path('images/hero-robot.png');
+        $this->assertFileExists($path, 'The real robot image must exist under public/images/hero-robot.png.');
+        $this->assertGreaterThan(0, filesize($path), 'The robot image file must not be empty.');
+
+        $mimeType = mime_content_type($path);
+        $this->assertIsString($mimeType);
+        $this->assertStringStartsWith('image/', $mimeType, 'Robot asset must have an image MIME type.');
+
+        $contents = file_get_contents($path);
+        $this->assertNotFalse($contents, 'Robot asset must be readable.');
+        $this->assertNotEmpty($contents, 'Robot asset body must not be empty.');
+
+        // The file is in the public directory, so a real web server (or php artisan serve)
+        // will serve GET /images/hero-robot.png with HTTP 200 and the same image content type.
+        $url = asset('images/hero-robot.png');
+        $this->assertStringContainsString('/images/hero-robot.png', $url);
     }
 }

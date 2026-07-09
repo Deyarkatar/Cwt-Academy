@@ -79,11 +79,21 @@ export function SplineSceneBasic() {
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
                 {/* Robot column */}
-                <div className={`hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] ${isRtl ? 'lg:order-1' : 'lg:order-2'}`}>
-                    <div className="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4">
+                <div
+                    className={`hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] ${isRtl ? 'lg:order-1' : 'lg:order-2'}`}
+                    data-testid="homepage-hero-robot"
+                >
+                    <div className="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4 flex items-center justify-center">
+                        <img
+                            src="/images/hero-robot.png"
+                            alt=""
+                            data-testid="homepage-hero-robot-image"
+                            className="absolute inset-0 w-full h-full object-contain"
+                            loading="eager"
+                        />
                         <SplineStage
                             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                            className="w-full h-full spline-stage-canvas"
+                            className="absolute inset-0 w-full h-full"
                         />
                     </div>
                 </div>
@@ -96,6 +106,7 @@ export function SplineSceneBasic() {
                             ? 'lg:order-2 lg:text-right lg:items-end'
                             : 'lg:order-1 lg:text-left lg:items-start'
                     }`}
+                    data-testid="homepage-hero-text"
                 >
                     <h1
                         className="font-extrabold text-white tracking-tight hero-title-display"

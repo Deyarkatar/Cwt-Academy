@@ -11,16 +11,13 @@ const SplineSceneBasic = lazy(() =>
 );
 
 /**
- * Fallback shown while the 3D scene loads or if it fails.
- * Uses a captured render of the real glossy black robot instead of a
- * spinner, placeholder, or fake SVG robot.
+ * Render the original SSR hero markup as a fallback. This preserves the
+ * real glossy black robot image and card text while the Spline scene is
+ * downloading, and keeps the hero visible if Spline fails to load.
  */
-function HeroFallback() {
-    return (
-        <div className="hero-card group w-full bg-[#0e0e0e] border border-white/10 rounded-[28px] shadow-2xl overflow-hidden relative min-h-[560px] lg:min-h-[680px]">
-            <div className="hero-robot-fallback absolute inset-0" />
-        </div>
-    );
+function HeroFallback({ ssrHtml }: { ssrHtml: string }) {
+    // eslint-disable-next-line react/no-danger
+    return <div dangerouslySetInnerHTML={{ __html: ssrHtml }} />;
 }
 
 /**
@@ -77,6 +74,11 @@ function mountSplineApp() {
         return;
     }
 
+    // Capture the SSR hero markup before React replaces it. Reusing this HTML
+    // as the Suspense/error fallback keeps the real robot image and text
+    // visible if Spline is slow to load or fails entirely.
+    const ssrHeroHtml = mountNode.innerHTML;
+
     // If we already have a root on a node, unmount it first. This prevents
     // duplicate React roots, leaking WebGL contexts, and stale React state
     // (including the error boundary) when the page is restored from bfcache.
@@ -104,8 +106,8 @@ function mountSplineApp() {
     currentMount = mountNode;
 
     root.render(
-        <SplineErrorBoundary key={`boundary-${attempt}`} fallback={<HeroFallback />}>
-            <Suspense fallback={<HeroFallback />}>
+        <SplineErrorBoundary key={`boundary-${attempt}`} fallback={<HeroFallback ssrHtml={ssrHeroHtml} />}>
+            <Suspense fallback={<HeroFallback ssrHtml={ssrHeroHtml} />}>
                 <SplineSceneBasic key={`scene-${attempt}`} />
             </Suspense>
         </SplineErrorBoundary>,

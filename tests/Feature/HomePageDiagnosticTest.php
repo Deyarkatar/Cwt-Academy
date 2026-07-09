@@ -75,7 +75,7 @@ class HomePageDiagnosticTest extends TestCase
         $robotDiv = substr($content, (int) strpos($content, 'hero-robot relative'), 120);
         $this->assertStringContainsString('lg:order-1', $robotDiv, 'Kurdish homepage should render robot on the left.');
         $this->assertMatchesRegularExpression(
-            '/dir="rtl"\s+class="[^"]*flex-col[^"]*lg:order-2/',
+            '/dir="rtl"[^>]*class="[^"]*flex-col[^"]*lg:order-2/',
             $content,
             'Kurdish homepage should render text on the right.'
         );
@@ -101,7 +101,7 @@ class HomePageDiagnosticTest extends TestCase
         $robotDiv = substr($content, (int) strpos($content, 'hero-robot relative'), 120);
         $this->assertStringContainsString('lg:order-2', $robotDiv, 'English homepage should render robot on the right.');
         $this->assertMatchesRegularExpression(
-            '/dir="ltr"\s+class="[^"]*flex-col[^"]*lg:order-1/',
+            '/dir="ltr"[^>]*class="[^"]*flex-col[^"]*lg:order-1/',
             $content,
             'English homepage should render text on the left.'
         );

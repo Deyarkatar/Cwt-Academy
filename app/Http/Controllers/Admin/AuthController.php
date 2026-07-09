@@ -95,11 +95,20 @@ class AuthController extends Controller
             ], 403);
         }
 
+        if (! $user->isAdmin()) {
+            AuditLogger::logLogin($user->id, true);
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Invalid credentials or account unavailable.',
+            ], 403);
+        }
+
         $user->last_login_at = now();
         $user->save();
 
         $tokenExpiresHours = is_numeric(config('sanctum.expiration')) ? (int) config('sanctum.expiration') : 480;
-        $token = $user->createToken('admin', ['*'], expiresAt: now()->addMinutes($tokenExpiresHours))->plainTextToken;
+        $token = $user->createToken('admin', ['admin'], expiresAt: now()->addMinutes($tokenExpiresHours))->plainTextToken;
 
         RateLimiter::clear($ipKey);
         RateLimiter::clear($emailKey);

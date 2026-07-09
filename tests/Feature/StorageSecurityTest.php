@@ -143,9 +143,11 @@ class StorageSecurityTest extends TestCase
         ]);
 
         $file = $this->paymentProofFile();
+        $hash = hash('sha256', strtolower(trim($courseRequest->student_email)));
 
         $this->postJson("/api/v1/course-requests/{$courseRequest->public_tracking_code}/payment-proof", [
             'amount_iqd' => 100000,
+            'email_hash' => $hash,
             'proof_file' => $file,
         ]);
 

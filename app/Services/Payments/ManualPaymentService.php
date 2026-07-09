@@ -126,6 +126,7 @@ class ManualPaymentService
                 'proof_file_path' => $path,
                 'proof_mime' => $mime,
                 'proof_size_bytes' => $file->getSize(),
+                'virus_scan_status' => 'pending',
             ]);
             $proof->status = PaymentProofStatus::PENDING->value;
 

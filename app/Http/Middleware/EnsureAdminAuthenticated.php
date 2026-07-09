@@ -33,6 +33,17 @@ class EnsureAdminAuthenticated
             return redirect()->route('verification.notice');
         }
 
+        // For API routes authenticated via Sanctum, verify the token has the
+        // 'admin' ability. This is defense-in-depth: the isAdmin() check above
+        // is the primary guard. Existing tokens with ['*'] still pass tokenCan().
+        $accessToken = $request->user()->currentAccessToken();
+        if ($accessToken && $request->is('api/*') && ! $request->user()->tokenCan('admin')) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Unauthorized. Admin access required.',
+            ], 403);
+        }
+
         if (! $request->user()->isAdmin()) {
             if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Auth;
 
+use App\Enums\AuditAction;
+use App\Models\AuditLog;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -40,15 +42,34 @@ class AccountLockoutService
 
             return false;
         } catch (\Exception $e) {
-            // Cache unavailable, skip lockout check
-            Log::warning('Cache unavailable, skipping account lockout check', [
+            // Cache unavailable: fail closed using database fallback.
+            // Check AuditLog for recent failed login attempts.
+            Log::critical('Cache unavailable, using database fallback for lockout check', [
                 'ip' => $ip,
                 'email' => $email,
                 'error' => $e->getMessage(),
             ]);
 
-            return false;
+            return $this->isLockedDatabaseFallback($ip);
         }
+    }
+
+    /**
+     * Database fallback for lockout check when cache/Redis is unavailable.
+     * Queries AuditLog for recent LOGIN_FAILED entries from the same IP.
+     */
+    private function isLockedDatabaseFallback(string $ip): bool
+    {
+        $thresholdValue = config('security.lockout.threshold', 5);
+        $threshold = is_numeric($thresholdValue) ? (int) $thresholdValue : 5;
+
+        $failedAttempts = AuditLog::query()
+            ->where('action', AuditAction::LOGIN_FAILED)
+            ->where('ip_address', $ip)
+            ->where('created_at', '>=', now()->subMinutes(15))
+            ->count();
+
+        return $failedAttempts >= $threshold;
     }
 
     public function recordFailure(string $ip, string $email): void

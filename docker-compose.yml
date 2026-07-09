@@ -38,7 +38,7 @@ services:
       DB_HOST: mysql
       REDIS_CLIENT: predis
       REDIS_HOST: redis
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-change-me-in-production}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
       REDIS_CACHE_DB: 1
       REDIS_QUEUE_DB: 2
       REDIS_QUEUE_CONNECTION: queue
@@ -52,7 +52,19 @@ services:
       R2_ENDPOINT: ${R2_ENDPOINT:-}
       SENTRY_LARAVEL_DSN: ${SENTRY_LARAVEL_DSN:-}
     volumes:
-      - .:/var/www/html
+      - ./app:/var/www/html/app:ro
+      - ./bootstrap:/var/www/html/bootstrap
+      - ./config:/var/www/html/config:ro
+      - ./database:/var/www/html/database:ro
+      - ./lang:/var/www/html/lang:ro
+      - ./public:/var/www/html/public
+      - ./resources:/var/www/html/resources:ro
+      - ./routes:/var/www/html/routes:ro
+      - ./storage:/var/www/html/storage
+      - ./vendor:/var/www/html/vendor:ro
+      - ./composer.json:/var/www/html/composer.json:ro
+      - ./composer.lock:/var/www/html/composer.lock:ro
+      - ./artisan:/var/www/html/artisan:ro
       - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
       - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
@@ -117,7 +129,7 @@ services:
     restart: unless-stopped
     command: >
       redis-server
-      --requirepass ${REDIS_PASSWORD:-change-me-in-production}
+      --requirepass ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
       --maxmemory 512mb
       --maxmemory-policy allkeys-lru
       --appendonly yes
@@ -134,7 +146,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -a \"${REDIS_PASSWORD:-change-me-in-production}\" ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli -a \"${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}\" ping | grep PONG"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -161,7 +173,7 @@ services:
       DB_HOST: mysql
       REDIS_CLIENT: predis
       REDIS_HOST: redis
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-change-me-in-production}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
       REDIS_CACHE_DB: 1
       REDIS_QUEUE_DB: 2
       REDIS_QUEUE_CONNECTION: queue
@@ -206,7 +218,7 @@ services:
       DB_HOST: mysql
       REDIS_CLIENT: predis
       REDIS_HOST: redis
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-change-me-in-production}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
       REDIS_CACHE_DB: 1
       REDIS_QUEUE_DB: 2
       REDIS_QUEUE_CONNECTION: queue
@@ -251,7 +263,7 @@ services:
       DB_HOST: mysql
       REDIS_CLIENT: predis
       REDIS_HOST: redis
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-change-me-in-production}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
       REDIS_CACHE_DB: 1
       REDIS_QUEUE_DB: 2
       REDIS_QUEUE_CONNECTION: queue

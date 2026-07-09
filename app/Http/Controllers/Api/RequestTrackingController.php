@@ -110,11 +110,19 @@ class RequestTrackingController extends Controller
         RateLimiter::hit($ipKey, decaySeconds: 600);
         RateLimiter::hit($codeKey, decaySeconds: 600);
 
+        $emailHash = $request->input('email_hash');
         $courseRequest = CourseRequest::query()
             ->where('public_tracking_code', $trackingCode)
             ->first();
 
         if (! $courseRequest) {
+            return response()->json([
+                'ok' => false,
+                'message' => __('errors.request_not_found'),
+            ], 404);
+        }
+
+        if ($emailHash !== hash('sha256', strtolower(trim($courseRequest->student_email)))) {
             return response()->json([
                 'ok' => false,
                 'message' => __('errors.request_not_found'),

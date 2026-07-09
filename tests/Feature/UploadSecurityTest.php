@@ -33,9 +33,11 @@ class UploadSecurityTest extends TestCase
         ]);
 
         $file = UploadedFile::fake()->create('malicious.exe', 100, 'application/x-msdownload');
+        $hash = hash('sha256', strtolower(trim($request->student_email)));
 
         $response = $this->postJson("/api/v1/course-requests/{$request->public_tracking_code}/payment-proof", [
             'amount_iqd' => 100000,
+            'email_hash' => $hash,
             'proof_file' => $file,
         ]);
 
@@ -59,9 +61,11 @@ class UploadSecurityTest extends TestCase
         ]);
 
         $file = $this->paymentProofFile('image/jpeg', 'large.jpg', 6000);
+        $hash = hash('sha256', strtolower(trim($request->student_email)));
 
         $response = $this->postJson("/api/v1/course-requests/{$request->public_tracking_code}/payment-proof", [
             'amount_iqd' => 100000,
+            'email_hash' => $hash,
             'proof_file' => $file,
         ]);
 
@@ -85,9 +89,11 @@ class UploadSecurityTest extends TestCase
         ]);
 
         $file = $this->paymentProofFile('image/jpeg', 'invoice.php.jpg');
+        $hash = hash('sha256', strtolower(trim($request->student_email)));
 
         $response = $this->postJson("/api/v1/course-requests/{$request->public_tracking_code}/payment-proof", [
             'amount_iqd' => 100000,
+            'email_hash' => $hash,
             'proof_file' => $file,
         ]);
 

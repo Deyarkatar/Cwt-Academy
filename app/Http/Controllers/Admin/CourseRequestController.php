@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Actions\CourseRequests\ApproveCourseRequestAction;
 use App\Actions\CourseRequests\RejectCourseRequestAction;
+use App\Enums\CourseRequestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ApproveCourseRequestRequest;
 use App\Http\Requests\Admin\RejectCourseRequestRequest;
@@ -22,6 +23,13 @@ class CourseRequestController extends Controller
             ->with(['course', 'latestPaymentProof']);
 
         if ($request->status) {
+            $allowedStatuses = array_map(fn (CourseRequestStatus $s) => $s->value, CourseRequestStatus::cases());
+            if (! in_array($request->status, $allowedStatuses, true)) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Invalid status filter.',
+                ], 422);
+            }
             $query->where('status', $request->status);
         }
 

@@ -27,29 +27,53 @@
             <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#FFD700]/[0.08] blur-3xl z-0 {{ $isKurdish ? 'left-[-10%]' : 'right-[-10%]' }}"></div>
 
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-8 lg:gap-12 px-5 py-8 sm:px-8 sm:py-10 lg:p-[clamp(24px,4vw,64px)]">
-                {{-- Robot visual --}}
-                <x-home-hero-robot />
+                @if($isKurdish)
+                    {{-- Kurdish/RTL: real robot on the left, text on the right --}}
+                    <x-home-hero-robot />
 
-                {{-- Text content --}}
-                <div dir="{{ $isKurdish ? 'rtl' : 'ltr' }}" class="flex flex-col justify-center text-center items-center {{ $isKurdish ? 'lg:order-2 lg:text-right lg:items-end' : 'lg:order-1 lg:text-left lg:items-start' }}">
-                    <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="{{ $isKurdish ? 'true' : 'false' }}">
-                        {{ __('home.hero_title') }}
-                        <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>
-                    </h1>
+                    <div dir="rtl" class="flex flex-col justify-center text-center items-center lg:order-2 lg:text-right lg:items-end">
+                        <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="true">
+                            {{ __('home.hero_title') }}
+                            <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>
+                        </h1>
 
-                    <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="{{ $isKurdish ? 'true' : 'false' }}">
-                        {{ __('home.hero_subtitle') }}
-                    </p>
+                        <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="true">
+                            {{ __('home.hero_subtitle') }}
+                        </p>
 
-                    <div class="mt-8 flex flex-wrap gap-4 justify-center {{ $isKurdish ? 'lg:justify-end' : 'lg:justify-start' }}">
-                        <a href="/courses" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm bg-gradient-to-br from-[#FFD700] to-[#FFB800] text-[#3a3000] shadow-[0_0_20px_rgba(255,215,0,0.2)] hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] hover:opacity-95 transition-all">
-                            {{ __('home.cta_browse') }}
-                        </a>
-                        <a href="/contact" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm border border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] transition-all">
-                            {{ __('home.cta_contact') }}
-                        </a>
+                        <div class="mt-8 flex flex-wrap gap-4 justify-center lg:justify-end">
+                            <a href="/courses" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm bg-gradient-to-br from-[#FFD700] to-[#FFB800] text-[#3a3000] shadow-[0_0_20px_rgba(255,215,0,0.2)] hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] hover:opacity-95 transition-all">
+                                {{ __('home.cta_browse') }}
+                            </a>
+                            <a href="/contact" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm border border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] transition-all">
+                                {{ __('home.cta_contact') }}
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @else
+                    {{-- English/LTR: text on the left, real robot on the right --}}
+                    <div dir="ltr" class="flex flex-col justify-center text-center items-center lg:order-1 lg:text-left lg:items-start">
+                        <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="false">
+                            {{ __('home.hero_title') }}
+                            <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>
+                        </h1>
+
+                        <p class="mt-5 text-base md:text-lg text-[#b7b5b4] max-w-lg leading-relaxed hero-subtitle-display" data-rtl="false">
+                            {{ __('home.hero_subtitle') }}
+                        </p>
+
+                        <div class="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start">
+                            <a href="/courses" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm bg-gradient-to-br from-[#FFD700] to-[#FFB800] text-[#3a3000] shadow-[0_0_20px_rgba(255,215,0,0.2)] hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] hover:opacity-95 transition-all">
+                                {{ __('home.cta_browse') }}
+                            </a>
+                            <a href="/contact" class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm border border-[#FFD700] text-[#FFD700] hover:bg-[rgba(255,215,0,0.1)] transition-all">
+                                {{ __('home.cta_contact') }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <x-home-hero-robot />
+                @endif
             </div>
         </div>
     </div>

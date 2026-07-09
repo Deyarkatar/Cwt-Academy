@@ -128,7 +128,7 @@
     ]
   },
   "resources/js/components/ui/spline-demo.tsx": {
-    "file": "assets/spline-demo-iRL5YPx5.js",
+    "file": "assets/spline-demo-CtPh50X1.js",
     "name": "spline-demo",
     "src": "resources/js/components/ui/spline-demo.tsx",
     "isDynamicEntry": true,
@@ -148,7 +148,7 @@
     ]
   },
   "resources/js/spline-app.tsx": {
-    "file": "assets/spline-app-C6mT4IwH.js",
+    "file": "assets/spline-app-qbiUxgOC.js",
     "name": "spline-app",
     "src": "resources/js/spline-app.tsx",
     "isEntry": true,

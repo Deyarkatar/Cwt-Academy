@@ -11,33 +11,13 @@ const SplineSceneBasic = lazy(() =>
 );
 
 /**
- * Static fallback shown when the 3D scene fails to load.
- * Uses the real robot image as reliable fallback.
+ * The SSR hero already contains the text and an empty robot stage.
+ * There is no separate fallback robot image; the real glossy black robot
+ * is rendered by the Spline runtime. Returning null keeps the SSR hero
+ * visible while the scene loads and avoids showing any placeholder/spinner.
  */
-function StaticPlaceholder() {
-    return (
-        <img
-            src="/images/hero-robot.svg"
-            alt="Cwt Academy robot"
-            className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(255,215,0,0.15)]"
-            loading="eager"
-            decoding="async"
-        />
-    );
-}
-
-/**
- * Suspense fallback. It shows a loading spinner indefinitely; a hard timeout
- * was removed because it permanently masked recoverable transient errors
- * (slow network, WebGL context restore, bfcache restore).
- */
-function LoadingFallback() {
-    return (
-        <div className="w-full h-full flex flex-col items-center justify-center bg-[#1a1a1a] rounded-xl p-6 gap-3">
-            <div className="w-10 h-10 border-4 border-gold-400/20 border-t-gold-400 rounded-full animate-spin" />
-            <p className="text-text-secondary text-sm">Loading 3D scene...</p>
-        </div>
-    );
+function HeroFallback() {
+    return null;
 }
 
 /**
@@ -121,8 +101,8 @@ function mountSplineApp() {
     currentMount = mountNode;
 
     root.render(
-        <SplineErrorBoundary key={`boundary-${attempt}`} fallback={<StaticPlaceholder />}>
-            <Suspense fallback={<LoadingFallback />}>
+        <SplineErrorBoundary key={`boundary-${attempt}`} fallback={<HeroFallback />}>
+            <Suspense fallback={<HeroFallback />}>
                 <SplineSceneBasic key={`scene-${attempt}`} />
             </Suspense>
         </SplineErrorBoundary>,

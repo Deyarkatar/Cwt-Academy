@@ -27,6 +27,13 @@ class PaymentProofController extends Controller
         $query = PaymentProof::query()->with(['courseRequest.course', 'reviewer']);
 
         if ($request->status) {
+            $allowedStatuses = array_map(fn (PaymentProofStatus $s) => $s->value, PaymentProofStatus::cases());
+            if (! in_array($request->status, $allowedStatuses, true)) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Invalid status filter.',
+                ], 422);
+            }
             $query->where('status', $request->status);
         }
 

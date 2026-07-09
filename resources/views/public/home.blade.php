@@ -5,7 +5,7 @@
 @section('content')
 @php($isKurdish = app()->getLocale() === 'ku')
 <!-- Hero — 3D Card (full-screen) -->
-<section class="relative min-h-[calc(100svh-80px)] lg:min-h-[calc(100vh-80px)] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 lg:pt-28 pb-12">
+<section class="relative min-h-[calc(100svh-80px)] lg:min-h-[calc(100vh-80px)] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 lg:pt-28 pb-12" data-testid="homepage-hero">
     <div
         id="spline-mount"
         class="w-full max-w-[1280px]"
@@ -31,7 +31,7 @@
                     {{-- Kurdish/RTL: real robot on the left, text on the right --}}
                     <x-home-hero-robot />
 
-                    <div dir="rtl" class="flex flex-col justify-center text-center items-center lg:order-2 lg:text-right lg:items-end">
+                    <div dir="rtl" class="flex flex-col justify-center text-center items-center lg:order-2 lg:text-right lg:items-end" data-testid="homepage-hero-text">
                         <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="true">
                             {{ __('home.hero_title') }}
                             <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>
@@ -52,7 +52,7 @@
                     </div>
                 @else
                     {{-- English/LTR: text on the left, real robot on the right --}}
-                    <div dir="ltr" class="flex flex-col justify-center text-center items-center lg:order-1 lg:text-left lg:items-start">
+                    <div dir="ltr" class="flex flex-col justify-center text-center items-center lg:order-1 lg:text-left lg:items-start" data-testid="homepage-hero-text">
                         <h1 class="font-extrabold text-white tracking-tight hero-title-display" data-rtl="false">
                             {{ __('home.hero_title') }}
                             <span class="text-[#FFD700]">{{ __('home.hero_highlight') }}</span>

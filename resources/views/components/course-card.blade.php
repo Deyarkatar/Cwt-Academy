@@ -1,4 +1,4 @@
-<div class="stitch-card flex flex-col group">
+<div class="stitch-card flex flex-col group" data-testid="course-card">
     <div class="h-48 relative overflow-hidden">
         @if($course && $course->image)
             <img src="{{ $course->image }}" alt="{{ $course->title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">

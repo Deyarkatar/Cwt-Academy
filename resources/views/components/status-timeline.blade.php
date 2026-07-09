@@ -19,7 +19,7 @@ $statuses = [
             $timelineStatusLabel = __('enum.course_request_status.' . strtolower($timelineStatus));
             $timelineStatusLabelFallback = $timelineStatusLabel === 'enum.course_request_status.' . strtolower($timelineStatus) ? $timelineStatus : $timelineStatusLabel;
         @endphp
-        <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $timelineStatus === 'APPROVED' ? 'bg-green-500/10 text-green-400' : ($timelineStatus === 'REJECTED' ? 'bg-red-500/10 text-red-400' : 'bg-amber-500/10 text-amber-400') }}">
+        <span data-testid="tracking-status" class="px-3 py-1 rounded-full text-xs font-semibold {{ $timelineStatus === 'APPROVED' ? 'bg-green-500/10 text-green-400' : ($timelineStatus === 'REJECTED' ? 'bg-red-500/10 text-red-400' : 'bg-amber-500/10 text-amber-400') }}">
             {{ $timelineStatusLabelFallback }}
         </span>
     </div>
@@ -39,7 +39,7 @@ $statuses = [
         @endforeach
     </div>
     @if(isset($data['telegram_access']['message']))
-    <div class="mt-4 bg-gold-400/5 border border-gold-400/20 rounded-lg p-4">
+    <div data-testid="telegram-manual-instructions" class="mt-4 bg-gold-400/5 border border-gold-400/20 rounded-lg p-4">
         <p class="text-sm text-text-secondary">{{ $data['telegram_access']['message'] }}</p>
     </div>
     @endif

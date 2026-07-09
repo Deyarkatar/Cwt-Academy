@@ -36,7 +36,7 @@
                         $channel = $request->course?->telegramChannel;
                         $hasUsableChannel = $channel && $channel->is_active && ! empty($channel->telegram_url);
                     @endphp
-                    <tr class="hover:bg-bg-section/50 transition-colors">
+                    <tr class="hover:bg-bg-section/50 transition-colors" data-testid="admin-course-request-row">
                         <td class="px-5 py-3">
                             <div class="text-text-primary font-medium">{{ $request->student_name }}</div>
                             <div class="text-text-muted text-xs">{{ $request->student_email }}</div>
@@ -96,7 +96,7 @@
                                 <form method="POST" action="{{ route('admin.requests.approve', $request->id) }}" class="inline" onsubmit="return confirm(@json(__('admin.confirm_approve')))">
                                     @csrf
                                     <input type="hidden" name="payment_proof_id" value="{{ $request->latestPaymentProof->id }}">
-                                    <button type="submit" class="text-xs btn-primary px-3 py-1.5" data-loading-text="{{ __('messages.processing') }}">
+                                    <button type="submit" data-testid="admin-approve-button" class="text-xs btn-primary px-3 py-1.5" data-loading-text="{{ __('messages.processing') }}">
                                         <span class="btn-text">{{ __('admin.approve') }}</span>
                                     </button>
                                 </form>
@@ -107,7 +107,7 @@
                                     @csrf
                                     <div class="flex flex-col gap-2">
                                         <input type="text" name="rejection_reason" required placeholder="{{ __('admin.enter_rejection_reason') }}" class="text-xs bg-bg-input border border-border-default rounded-lg px-2 py-1 text-text-primary placeholder-text-muted focus:border-gold-400 focus:outline-none w-48">
-                                        <button type="submit" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded hover:bg-red-500/20 transition-colors text-left" data-loading-text="{{ __('messages.processing') }}">
+                                        <button type="submit" data-testid="admin-reject-button" class="text-xs bg-red-500/10 text-red-400 px-3 py-1.5 rounded hover:bg-red-500/20 transition-colors text-left" data-loading-text="{{ __('messages.processing') }}">
                                             <span class="btn-text">{{ __('admin.reject') }}</span>
                                         </button>
                                     </div>

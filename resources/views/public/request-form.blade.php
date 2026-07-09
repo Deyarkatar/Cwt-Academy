@@ -19,7 +19,7 @@
     </div>
 
     <div class="bg-bg-card border border-border-default rounded-2xl p-6 md:p-8">
-        <form method="POST" action="{{ route('course-requests.store') }}" enctype="multipart/form-data" class="space-y-6" data-submit-loading>
+        <form method="POST" action="{{ route('course-requests.store') }}" enctype="multipart/form-data" class="space-y-6" data-submit-loading data-testid="course-request-form">
             @csrf
             <input type="hidden" name="course_id" value="{{ $course?->id }}">
 
@@ -118,6 +118,7 @@
                             @if (($course?->price_iqd ?? 0) > 0) required @endif
                             class="sr-only"
                             data-proof-input
+                            data-testid="payment-proof-input"
                         >
                         <div class="flex flex-col items-center gap-2 pointer-events-none">
                             <span class="material-symbols-outlined text-3xl text-gold-400">cloud_upload</span>

@@ -44,7 +44,7 @@ class TrackingController extends Controller
                 ];
 
                 if ($emailHash !== '') {
-                    $requestData['rejection_reason'] = $courseRequest->public_rejection_note;
+                    $requestData['public_rejection_note'] = $courseRequest->public_rejection_note;
                     $requestData['payment_proof_status'] = $courseRequest->latestPaymentProof?->status->value;
 
                     if ($courseRequest->telegramAccessGrant) {

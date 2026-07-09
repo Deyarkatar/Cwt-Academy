@@ -22,7 +22,7 @@
         <div class="bg-bg-section border border-border-default rounded-xl p-5 mb-6">
             <p class="text-sm text-text-muted mb-2">{{ __('request.your_tracking_code') }}</p>
             <div class="flex items-center gap-3 flex-wrap">
-                <code id="tracking-code" class="text-2xl md:text-3xl font-mono font-bold text-gold-400 tracking-wider">{{ $courseRequest->public_tracking_code }}</code>
+                <code id="tracking-code" data-testid="tracking-code" class="text-2xl md:text-3xl font-mono font-bold text-gold-400 tracking-wider">{{ $courseRequest->public_tracking_code }}</code>
                 <button type="button" data-copy-target="#tracking-code" data-copy-success="{{ __('request.code_copied') }}" class="shrink-0 flex items-center gap-1.5 text-sm text-gold-400 hover:text-gold-300 transition-colors px-3 py-1.5 rounded-lg bg-gold-400/10">
                     <span class="material-symbols-outlined text-base">content_copy</span>
                     <span class="copy-label">{{ __('request.copy_code') }}</span>

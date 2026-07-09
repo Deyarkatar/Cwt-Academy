@@ -83,7 +83,7 @@ export function SplineSceneBasic() {
                     <div className="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4">
                         <SplineStage
                             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                            className="w-full h-full"
+                            className="w-full h-full spline-stage-canvas"
                         />
                     </div>
                 </div>

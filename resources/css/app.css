@@ -399,6 +399,22 @@ html, body {
     min-height: 200px !important;
 }
 
+/* Real robot fallback image — shown while the Spline scene loads or if
+   WebGL fails. Not a fake SVG robot, spinner, or placeholder. */
+.hero-robot-fallback {
+    background-image: url('/images/hero-robot-fallback.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Hide the fallback only once the real Spline scene reports loaded.
+   The canvas container is appended after the fallback div, so a sibling
+   selector is enough and avoids :has() support quirks in some pipelines. */
+.hero-robot-stage .spline-stage-canvas.spline-loaded ~ .hero-robot-fallback {
+    display: none;
+}
+
 /* Robot stage — soft radial mask so the canvas edges fade into the card,
    eliminating any visible rectangular frame around the robot */
 .hero-robot-stage {

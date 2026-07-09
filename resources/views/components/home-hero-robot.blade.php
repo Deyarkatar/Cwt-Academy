@@ -3,5 +3,8 @@
 {{-- The React Spline app replaces this stage with the glossy black 3D robot. --}}
 @php($isKurdish = app()->getLocale() === 'ku')
 <div class="hero-robot relative w-full h-[380px] sm:h-[440px] lg:h-[620px] xl:h-[680px] {{ $isKurdish ? 'lg:order-1' : 'lg:order-2' }}" data-testid="homepage-hero-robot">
-    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4"></div>
+    <div class="hero-robot-stage absolute inset-0 lg:-inset-x-4 lg:-bottom-4">
+        {{-- Real robot fallback image: visible before the Spline canvas loads --}}
+        <div class="hero-robot-fallback absolute inset-0"></div>
+    </div>
 </div>

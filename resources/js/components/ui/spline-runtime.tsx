@@ -70,6 +70,9 @@ export function SplineRuntime({ scene, className }: SplineRuntimeProps) {
                     // eslint-disable-next-line no-console
                     console.log('[SplineRuntime] Scene loaded successfully');
                     safeSetStatus('loaded');
+                    if (container) {
+                        container.classList.add('spline-loaded');
+                    }
                 })
                 .catch((err: unknown) => {
                     if (cancelled || disposed) return;

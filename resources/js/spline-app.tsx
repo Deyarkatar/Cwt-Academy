@@ -11,13 +11,16 @@ const SplineSceneBasic = lazy(() =>
 );
 
 /**
- * The SSR hero already contains the text and an empty robot stage.
- * There is no separate fallback robot image; the real glossy black robot
- * is rendered by the Spline runtime. Returning null keeps the SSR hero
- * visible while the scene loads and avoids showing any placeholder/spinner.
+ * Fallback shown while the 3D scene loads or if it fails.
+ * Uses a captured render of the real glossy black robot instead of a
+ * spinner, placeholder, or fake SVG robot.
  */
 function HeroFallback() {
-    return null;
+    return (
+        <div className="hero-card group w-full bg-[#0e0e0e] border border-white/10 rounded-[28px] shadow-2xl overflow-hidden relative min-h-[560px] lg:min-h-[680px]">
+            <div className="hero-robot-fallback absolute inset-0" />
+        </div>
+    );
 }
 
 /**
